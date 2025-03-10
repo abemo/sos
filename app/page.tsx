@@ -1,10 +1,8 @@
-import Header from "@/components/Header";
 import FirstVisitPopup from "@/components/FirstVisitPopup";
 
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen w-full">
-      <Header />
       <FirstVisitPopup />
       {/* Main Content */}
       <main className="flex flex-1 w-full">
