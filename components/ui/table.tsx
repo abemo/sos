@@ -2,6 +2,13 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
+// Resources for help with tables:
+// https://tanstack.com/table/v8
+// https://ui.shadcn.com/examples/tasks
+
+
+
+
 const Table = React.forwardRef<
   HTMLTableElement,
   React.HTMLAttributes<HTMLTableElement>

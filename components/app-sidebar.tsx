@@ -15,14 +15,14 @@ import {
 import { title } from "process"
 import { url } from "inspector"
 
-const sideHeader = {
+const homeGroup = {
     title: "Home",
     url: "/",
     icon: Menu,
 }
 
 // Maybe use a pop up instead? its called a popover. I'd like to use it for the settings button.
-const sideFooter = {
+const settingsGroup = {
     title: "Settings",
     url: "/settings",
     icon: Settings,
@@ -69,9 +69,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     >
       <SidebarHeader>
           <SidebarMenuButton asChild>
-              <a href={sideHeader.url}>
-              <sideHeader.icon />
-              <span>{sideHeader.title}</span>
+              <a href={homeGroup.url}>
+              <homeGroup.icon />
+              <span>{homeGroup.title}</span>
               </a>
           </SidebarMenuButton>
         </SidebarHeader>
@@ -113,9 +113,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         {/* Footer: This can be changed to SidebarFooter, but it overlaps with supabase icon */}
         <SidebarGroup>
             <SidebarMenuButton asChild>
-                <a href={sideFooter.url}>
-                    <sideFooter.icon />
-                    <span>{sideFooter.title}</span>
+                <a href={settingsGroup.url}>
+                    <settingsGroup.icon />
+                    <span>{settingsGroup.title}</span>
                     </a>
                 </SidebarMenuButton>
             </SidebarGroup>

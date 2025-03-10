@@ -44,6 +44,10 @@ export function SiteHeader() {
           </BreadcrumbList>
         </Breadcrumb>
         <SearchForm className="w-full sm:ml-auto sm:w-auto" />
+        {/* Check ui/button.tsx for styling options 'variants' */}
+        <Button asChild>
+          <a href="login">Log in</a>
+        </Button>
       </div>
     </header>
   )

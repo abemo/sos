@@ -1,5 +1,6 @@
 "use client"
 
+// Mostly unused section because its from more complex sidebar component but could be useful later.
 import {
   BadgeCheck,
   Bell,

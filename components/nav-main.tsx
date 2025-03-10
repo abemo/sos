@@ -22,17 +22,19 @@ import {
 export function NavMain({
   items,
 }: {
-  items: {
-    title: string
-    url: string
-    icon: LucideIcon
-    isActive?: boolean
-    items?: {
-      title: string
-      url: string
-    }[]
-  }[]
+  readonly items: ReadonlyArray<{
+    readonly title: string
+    readonly url: string
+    readonly icon: LucideIcon
+    readonly isActive?: boolean
+    readonly items?: ReadonlyArray<{
+      readonly title: string
+      readonly url: string
+    }>
+  }>
 }) {
+  // plenty of this goes unused because it comes from a more complex sidebar component
+  // would be nice to cut out what isn't needed because it could cause unintended behavior
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
