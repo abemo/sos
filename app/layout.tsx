@@ -22,18 +22,6 @@ export default function RootLayout({
       <body className="bg-background text-foreground">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <div className="flex flex-col min-h-screen w-full">
-
-            {/* Custom Header (TODO: Need to move header out here instead) */}
-            <Header />
-            {/* Sidebar */}
-            <SidebarProvider>
-              <AppSidebar />
-              <main>
-                <SidebarTrigger />
-                {children}
-              </main>
-            </SidebarProvider>
-            {/* Main Content */}
             <main className="flex-1 w-full">{children}</main>
 
             {/* Custom Footer */}

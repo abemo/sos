@@ -35,7 +35,7 @@ const Header = () => {
   const isLoggedIn = boolLoggedIn; // Using your existing variable
 
   return (
-    <header className="w-full bg-blue-600 p-4">
+    <header className="w-full bg-blue-600 p-4 sticky top-0 z-50">
       <div className="max-w-6xl mx-auto grid grid-cols-3 items-center">
         {/* Left Section - Home Button */}
         <div className="flex items-center justify-start">
