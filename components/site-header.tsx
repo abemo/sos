@@ -15,6 +15,15 @@ import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { useSidebar } from "@/components/ui/sidebar"
 
+const path = window.location.pathname
+  .split("/")
+  .filter(Boolean)
+  .map((part) =>
+     part[0].toUpperCase() + part.slice(1)
+  );
+
+const atHome = path.length === 0
+
 export function SiteHeader() {
   const { toggleSidebar } = useSidebar()
 
@@ -34,12 +43,12 @@ export function SiteHeader() {
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink href="#">
-                Building Your Application
+                <span className="text-primary">Home</span>
               </BreadcrumbLink>
             </BreadcrumbItem>
-            <BreadcrumbSeparator />
+            {!atHome && <BreadcrumbSeparator /> } {/* Hide separator when at home */}
             <BreadcrumbItem>
-              <BreadcrumbPage>Data Fetching</BreadcrumbPage>
+              <BreadcrumbPage>{path}</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
