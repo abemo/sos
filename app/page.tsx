@@ -1,4 +1,4 @@
-import FirstVisitPopup from "@/components/FirstVisitPopup"; // may add first visit popup back in later
+import FirstVisitPopup from "@/components/first-visit-popup"; // may add first visit popup back in later
 import { AppSidebar } from "@/components/app-sidebar"
 import { SiteHeader } from "@/components/site-header"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"

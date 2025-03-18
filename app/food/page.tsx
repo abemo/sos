@@ -1,5 +1,5 @@
 import { createClient } from "@/utils/supabase/server";
-import ResourceList from "./resource-list";
+import ResourceList from "@/components/resource-list";
 
 export default async function Page() {
   const supabase = await createClient();  // Await the client creation
