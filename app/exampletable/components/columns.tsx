@@ -4,7 +4,7 @@ import { ColumnDef } from "@tanstack/react-table"
 
 import { Badge } from "@/components/ui/badge"
 
-import { statuses, categories } from "../data/data"
+import { categories, locations } from "../data/data"
 // for now we are gonna uses statuses in the location column
 import { Resource } from "../data/schema"
 import { DataTableColumnHeader } from "./data-table-column-header"
@@ -58,20 +58,17 @@ export const columns: ColumnDef<Resource>[] = [
       <DataTableColumnHeader column={column} title="Location" />
     ),
     cell: ({ row }) => {
-      const status = statuses.find(
-        (status) => status.value === row.getValue("location")
+      const location = locations.find(
+        (location) => location.value === row.getValue("location")
       )
 
-      if (!status) {
+      if (!location) {
         return null
       }
 
       return (
         <div className="flex w-[100px] items-center">
-          {status.icon && (
-            <status.icon className="mr-2 h-4 w-4 text-muted-foreground" />
-          )}
-          <span>{status.label}</span>
+          <span>{location.label}</span>
         </div>
       )
     },
