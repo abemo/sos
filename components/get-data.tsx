@@ -8,11 +8,12 @@ export async function getData() {
 
   // Fetch only active resources
   const { data: resources, error } = await supabase
-    .from("fire_resources")
+    .from("resources_short")
     .select("*")
-    .gte("active_end", now)  // active_end ≥ now
-    .lte("active_start", now); // active_start ≤ now
+/*     .gte("active_end", now)  // active_end ≥ now 
+    .lte("active_start", now); // active_start ≤ now  FOR NOW JUST GETTING EVERYTHING I THINK */
 
+  console.log(resources);
   if (error) {
     console.error("Error fetching resources:", error);
     throw new Error("Failed to load resources");

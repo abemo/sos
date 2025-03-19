@@ -17,6 +17,7 @@ export const metadata: Metadata = {
 export default async function Page() {
   const resources = await getData()
 
+  console.log(resources);
   return (
     <>
       <div className="md:hidden">

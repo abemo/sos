@@ -58,10 +58,6 @@ export const locations = [
     label: "Boston",
   },
   {
-    value: "Washington DC",
-    label: "Washington DC",
-  },
-  {
     value: "Miami",
     label: "Miami",
   },
@@ -129,4 +125,16 @@ export const locations = [
     value: "Montreal",
     label: "Montreal",
   },
+  {
+    value: "Washington D.C.",
+    label: "Washington D.C.",
+  },
+  {
+    value: "Charlotte",
+    label: "Charlotte",
+  },
+  {
+    value: "Nashville",
+    label: "Nashville",
+  }
 ]

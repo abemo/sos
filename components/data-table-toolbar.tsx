@@ -19,7 +19,6 @@ export function DataTableToolbar<TData>({
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0
 
-  console.log(table.getAllColumns());
   return (
     <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center space-x-2">
@@ -31,9 +30,9 @@ export function DataTableToolbar<TData>({
           }
           className="h-8 w-[150px] lg:w-[250px]"
         />
-        {table.getColumn("location") && (
+        {table.getColumn("location_area") && (
           <DataTableFacetedFilter
-            column={table.getColumn("location")}
+            column={table.getColumn("location_area")}
             title="Location"
             options={locations}
           />

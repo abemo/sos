@@ -15,14 +15,11 @@ import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { useSidebar } from "@/components/ui/sidebar"
 
-const path = window.location.pathname
-  .split("/")
-  .filter(Boolean)
-  .map((part) =>
-     part[0].toUpperCase() + part.slice(1)
-  );
+const pathParts = window.location.pathname.split("/").filter(Boolean);
+const lastPathPart = pathParts[pathParts.length - 1] || "";
+const capitalizedLastPart = lastPathPart ? lastPathPart[0].toUpperCase() + lastPathPart.slice(1) : "";
 
-const atHome = path.length === 0
+const atHome = pathParts.length === 0;
 
 export function SiteHeader() {
   const { toggleSidebar } = useSidebar()
@@ -48,7 +45,7 @@ export function SiteHeader() {
             </BreadcrumbItem>
             {!atHome && <BreadcrumbSeparator /> } {/* Hide separator when at home */}
             <BreadcrumbItem>
-              <BreadcrumbPage>{path}</BreadcrumbPage>
+              <BreadcrumbPage>{capitalizedLastPart}</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>

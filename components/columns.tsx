@@ -52,13 +52,13 @@ export const columns: ColumnDef<Resource>[] = [
     },
   },
   {
-    accessorKey: "location",
+    accessorKey: "location_area",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Location" />
     ),
     cell: ({ row }) => {
       const location = locations.find(
-        (location) => location.value === row.getValue("location")
+        (location) => location.value === row.getValue("location_area")
       )
 
       if (!location) {
