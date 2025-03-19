@@ -4,11 +4,10 @@ import { ColumnDef } from "@tanstack/react-table"
 
 import { Badge } from "@/components/ui/badge"
 
-import { categories, locations } from "../data/data"
+import { categories, locations } from "@/app/data/data"
 // for now we are gonna uses statuses in the location column
-import { Resource } from "../data/schema"
+import { Resource } from "@/app/data/schema"
 import { DataTableColumnHeader } from "./data-table-column-header"
-import { DataTableRowActions } from "./data-table-row-actions"
 
 
 export const columns: ColumnDef<Resource>[] = [

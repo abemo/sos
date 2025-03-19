@@ -4,28 +4,18 @@ import { Metadata } from "next"
 import Image from "next/image"
 import { z } from "zod"
 
-import { columns } from "./components/columns"
-import { DataTable } from "./components/data-table"
-import { resourceSchema } from "./data/schema"
+import { columns } from "@/components/columns"
+import { DataTable } from "@/components/data-table"
+import { resourceSchema } from "@/app/data/schema"
+import { getData } from "@/components/get-data"
 
 export const metadata: Metadata = {
-  title: "Tasks",
-  description: "A task and issue tracker build using Tanstack Table.",
+  title: "Resource Finder",
+  description: "A resource table built using Tanstack Table.",
 }
 
-// Simulate a database read for tasks.
-async function getTasks() {
-  const data = await fs.readFile(
-    path.join(process.cwd(), "app/exampletable/data/resources.json")
-  )
-
-  const tasks = JSON.parse(data.toString())
-
-  return z.array(resourceSchema).parse(tasks)
-}
-
-export default async function TaskPage() {
-  const tasks = await getTasks()
+export default async function Page() {
+  const resources = await getData()
 
   return (
     <>
@@ -46,7 +36,7 @@ export default async function TaskPage() {
         />
       </div>
       <div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
-        <DataTable data={tasks} columns={columns} />
+        <DataTable data={resources} columns={columns} />
       </div>
     </>
   )

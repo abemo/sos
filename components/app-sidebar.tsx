@@ -24,7 +24,7 @@ const homeGroup = {
 // Maybe use a pop up instead? its called a popover. I'd like to use it for the settings button.
 const settingsGroup = {
     title: "Settings",
-    url: "/settings",
+    url: "/pages/settings",
     icon: Settings,
 }
 
@@ -34,17 +34,17 @@ const settingsGroup = {
 const aidItems = [
   {
     title: "Housing",
-    url: "housing",
+    url: "/pages/housing",
     icon: Home,
   },
   {
     title: "Food",
-    url: "food",
+    url: "/pages/food",
     icon: Apple,
   },
   {
     title: "Wellness",
-    url: "wellness",
+    url: "/pages/wellness",
     icon: Heart,
   },
 ]
@@ -52,12 +52,12 @@ const aidItems = [
 const giveItems = [
     {
         title: "Donate",
-        url: "donate",
+        url: "/pages/donate",
         icon: HandCoins,
       },
       {
         title: "Volunteer",
-        url: "volunteer",
+        url: "/pages/volunteer",
         icon: Handshake,
       },  
 ]
