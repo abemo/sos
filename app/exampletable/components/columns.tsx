@@ -40,6 +40,19 @@ export const columns: ColumnDef<Resource>[] = [
     },
   },
   {
+    accessorKey: "category",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Category" />
+    ),
+    cell: ({ row }) => {
+      const category = categories.find(
+        (category) => category.value === row.getValue("category")
+      )
+
+      return <div>{category?.label}</div>
+    },
+  },
+  {
     accessorKey: "location",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Location" />
