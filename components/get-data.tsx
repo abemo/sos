@@ -1,5 +1,6 @@
+import { createClient } from "@/utils/supabase/server";
+
 export async function getData() {
-  const { createClient } = require('@supabase/supabase-js');
   const supabase = await createClient();  // Await the client creation
 
   // Get current timestamp
