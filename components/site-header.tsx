@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import { SidebarIcon } from "lucide-react"
 
 import { SearchForm } from "@/components/search-form"
@@ -15,17 +16,21 @@ import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { useSidebar } from "@/components/ui/sidebar"
 
-const path = window.location.pathname
-  .split("/")
-  .filter(Boolean)
-  .map((part) =>
-     part[0].toUpperCase() + part.slice(1)
-  );
-
-const atHome = path.length === 0
-
 export function SiteHeader() {
   const { toggleSidebar } = useSidebar()
+
+  const [path, setPath] = useState<string[]>([])
+  
+  useEffect(() => {
+    const pathname = window.location.pathname
+      .split("/")
+      .filter(Boolean)
+      .map((part) => part[0].toUpperCase() + part.slice(1))
+
+    setPath(pathname)
+  }, []) 
+
+  const atHome = path.length === 0
 
   return (
     <header className="fle sticky top-0 z-50 w-full items-center border-b bg-background">
@@ -42,7 +47,7 @@ export function SiteHeader() {
         <Breadcrumb className="hidden sm:block">
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink href="#">
+              <BreadcrumbLink href="/">
                 <span className="text-primary">Home</span>
               </BreadcrumbLink>
             </BreadcrumbItem>
