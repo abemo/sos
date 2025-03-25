@@ -46,7 +46,7 @@ export function DataTable<TData, TValue>({
       location: false, // For now making location hidden
     })
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
+    [{id: "category", value: "Food"}]
   )
   const [sorting, setSorting] = React.useState<SortingState>([])
 
