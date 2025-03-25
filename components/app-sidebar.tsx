@@ -12,8 +12,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { title } from "process"
-import { url } from "inspector"
 
 const homeGroup = {
     title: "Home",
@@ -36,16 +34,19 @@ const aidItems = [
     title: "Housing",
     url: "/pages/housing",
     icon: Home,
+    filterValue: "Housing",
   },
   {
     title: "Food",
     url: "/pages/food",
     icon: Apple,
+    filterValue: "Food",
   },
   {
     title: "Wellness",
     url: "/pages/wellness",
     icon: Heart,
+    filterValue: "Wellness",
   },
 ]
 
@@ -82,7 +83,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarMenu>
               {aidItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton asChild
+                    >
                     <a href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>

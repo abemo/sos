@@ -31,11 +31,13 @@ import { DataTableToolbar } from "./data-table-toolbar"
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  filter: ColumnFiltersState
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  filter,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({})
   const [columnVisibility, setColumnVisibility] =
@@ -46,7 +48,7 @@ export function DataTable<TData, TValue>({
       location: false, // For now making location hidden
     })
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    [{id: "category", value: "Food"}]
+    filter 
   )
   const [sorting, setSorting] = React.useState<SortingState>([])
 

@@ -1,12 +1,9 @@
-import { promises as fs } from "fs"
-import path from "path"
+
 import { Metadata } from "next"
 import Image from "next/image"
-import { z } from "zod"
 
 import { columns } from "@/components/columns"
 import { DataTable } from "@/components/data-table"
-import { resourceSchema } from "@/app/data/schema"
 import { getData } from "@/components/get-data"
 
 export const metadata: Metadata = {
@@ -17,7 +14,6 @@ export const metadata: Metadata = {
 export default async function Page() {
   const resources = await getData()
 
-  console.log(resources);
   return (
     <>
       <div className="md:hidden">
@@ -37,7 +33,7 @@ export default async function Page() {
         />
       </div>
       <div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
-        <DataTable data={resources} columns={columns} />
+        <DataTable data={resources} columns={columns} filter={[{id: "category", value: "Food"}]} />
       </div>
     </>
   )
