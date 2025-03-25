@@ -1,5 +1,10 @@
+"use client"
+
+import { useFilterContext } from "@/components/filter-context"
+
 import { Menu, Home, Apple, Settings, Handshake, HandCoins, Heart} from "lucide-react"
 
+import Link from "next/link"
 import {
   Sidebar,
   SidebarContent,
@@ -12,6 +17,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { it } from "node:test"
 
 const homeGroup = {
     title: "Home",
@@ -63,7 +69,11 @@ const giveItems = [
       },  
 ]
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {  return (
+export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {  
+  const { setFilterSidebar } = useFilterContext();
+
+
+  return (
     <Sidebar
       className="top-[--header-height] !h-[calc(100svh-var(--header-height))]"
       {...props}
@@ -85,10 +95,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild
                     >
-                    <a href={item.url}>
+                    <Link href={"/pages/food"} onClick={() => setFilterSidebar([{id: "category", value: item.filterValue}])}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

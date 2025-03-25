@@ -16,6 +16,8 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 
+import { useFilterContext } from "@/components/filter-context"
+
 import {
   Table,
   TableBody,
@@ -31,13 +33,11 @@ import { DataTableToolbar } from "./data-table-toolbar"
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
-  filter: ColumnFiltersState
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
-  filter,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({})
   const [columnVisibility, setColumnVisibility] =
@@ -47,9 +47,16 @@ export function DataTable<TData, TValue>({
       category: false, // default made category hidden
       location: false, // For now making location hidden
     })
+
+
+  const { filterSidebar } = useFilterContext();
+
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    filter 
+    filterSidebar
   )
+
+  console.log("filterSidebar", filterSidebar[0].value)
+
   const [sorting, setSorting] = React.useState<SortingState>([])
 
   const table = useReactTable({

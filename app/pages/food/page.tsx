@@ -5,6 +5,7 @@ import Image from "next/image"
 import { columns } from "@/components/columns"
 import { DataTable } from "@/components/data-table"
 import { getData } from "@/components/get-data"
+import { useState } from "react"
 
 export const metadata: Metadata = {
   title: "Resource Finder",
@@ -33,7 +34,7 @@ export default async function Page() {
         />
       </div>
       <div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
-        <DataTable data={resources} columns={columns} filter={[{id: "category", value: "Food"}]} />
+        <DataTable data={resources} columns={columns} />
       </div>
     </>
   )
