@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import { SidebarIcon } from "lucide-react"
 
 import { SearchForm } from "@/components/search-form"
@@ -15,14 +16,23 @@ import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { useSidebar } from "@/components/ui/sidebar"
 
-const pathParts = window.location.pathname.split("/").filter(Boolean);
-const lastPathPart = pathParts[pathParts.length - 1] || "";
-const capitalizedLastPart = lastPathPart ? lastPathPart[0].toUpperCase() + lastPathPart.slice(1) : "";
-
-const atHome = pathParts.length === 0;
-
 export function SiteHeader() {
   const { toggleSidebar } = useSidebar()
+  
+  // State to hold path
+  const [path, setPath] = useState<string[]>([])
+
+  // Ensure window is only accessed on client-side
+  useEffect(() => {
+    const pathname = window.location.pathname
+      .split("/")
+      .filter(Boolean)
+      .map((part) => part[0].toUpperCase() + part.slice(1))
+
+    setPath(pathname)
+  }, []) // Empty dependency array means it runs only once on mount
+
+  const atHome = path.length === 0
 
   return (
     <header className="fle sticky top-0 z-50 w-full items-center border-b bg-background">
@@ -39,14 +49,18 @@ export function SiteHeader() {
         <Breadcrumb className="hidden sm:block">
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink href="#">
+              <BreadcrumbLink href="/">
                 <span className="text-primary">Home</span>
               </BreadcrumbLink>
             </BreadcrumbItem>
-            {!atHome && <BreadcrumbSeparator /> } {/* Hide separator when at home */}
-            <BreadcrumbItem>
-              <BreadcrumbPage>{capitalizedLastPart}</BreadcrumbPage>
-            </BreadcrumbItem>
+            {!atHome && (
+              <>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>{path[path.length - 1]}</BreadcrumbPage>
+                </BreadcrumbItem>
+              </>
+            )}
           </BreadcrumbList>
         </Breadcrumb>
         <SearchForm className="w-full sm:ml-auto sm:w-auto" />
@@ -58,3 +72,4 @@ export function SiteHeader() {
     </header>
   )
 }
+
