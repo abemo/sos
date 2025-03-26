@@ -2,7 +2,7 @@
 
 import { useFilterContext } from "@/components/filter-context"
 
-import { Menu, Home, Apple, Settings, Handshake, HandCoins, Heart} from "lucide-react"
+import { Menu, Home, Apple, Settings, Handshake, HandCoins, Heart, Search} from "lucide-react"
 
 import Link from "next/link"
 import {
@@ -32,10 +32,14 @@ const settingsGroup = {
     icon: Settings,
 }
 
-
-
 // Menu items.
 const aidItems = [
+  {
+    title: "All Resources",
+    url: "/pages/resources",
+    icon: Search,
+    filterValue: "",
+  },
   {
     title: "Housing",
     url: "/pages/housing",
