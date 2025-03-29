@@ -96,10 +96,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     
     if (item.filterValue === "") {
       // Clear the filter parameter for "All Resources"
-      params.delete("filter");
+      params.delete("category");
     } else {
       // Set the filter parameter to the selected category
-      params.set("filter", item.filterValue.toLowerCase());
+      params.set("category", item.filterValue.toLowerCase());
     }
     
     // Update the filter context as well

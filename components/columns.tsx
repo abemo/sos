@@ -50,6 +50,17 @@ export const columns: ColumnDef<Resource>[] = [
 
       return <div>{category?.label}</div>
     },
+    // Add OR filter function for category
+    filterFn: (row, id, value) => {
+      // If no filters selected, show all rows
+      if (!value || value.length === 0) return true;
+      
+      // Get the row's category value
+      const rowValue = row.getValue(id);
+      
+      // Return true if the row's category matches any selected filter values
+      return value.includes(rowValue);
+    },
   },
   {
     accessorKey: "location_area",
@@ -71,8 +82,16 @@ export const columns: ColumnDef<Resource>[] = [
         </div>
       )
     },
+    // Update the filter function for location to use OR logic
     filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id))
+      // If no filters selected, show all rows
+      if (!value || value.length === 0) return true;
+      
+      // Get the row's location value
+      const rowValue = row.getValue(id);
+      
+      // Return true if the row's location matches any selected filter values
+      return value.includes(rowValue);
     },
   },
 ]

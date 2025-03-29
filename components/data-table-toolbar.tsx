@@ -42,6 +42,7 @@ export function DataTableToolbar<TData>({
             column={table.getColumn("category")}
             title="Category"
             options={categories}
+            queryParamKey="category"
           />
         )}
         {isFiltered && (

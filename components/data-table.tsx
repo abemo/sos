@@ -48,14 +48,11 @@ export function DataTable<TData, TValue>({
       location: false, // For now making location hidden
     })
 
-
-  const { filterSidebar } = useFilterContext();
-
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    [{id: "category", value: "Food"}]
+    []
   )
 
-  console.log("filterSidebar", filterSidebar[0].value)
+  //{id: "category", value: []}
 
   const [sorting, setSorting] = React.useState<SortingState>([])
 

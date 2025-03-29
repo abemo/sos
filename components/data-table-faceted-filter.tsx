@@ -1,6 +1,7 @@
 import * as React from "react"
 import { Column } from "@tanstack/react-table"
 import { Check, PlusCircle } from "lucide-react"
+import { useRouter, usePathname, useSearchParams } from "next/navigation"
 
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
@@ -17,6 +18,7 @@ import { Separator } from "@/components/ui/separator"
 interface DataTableFacetedFilterProps<TData, TValue> {
   column?: Column<TData, TValue>
   title?: string
+  queryParamKey?: string // Add prop for query parameter key
   options: {
     label: string
     value: string
@@ -27,10 +29,55 @@ interface DataTableFacetedFilterProps<TData, TValue> {
 export function DataTableFacetedFilter<TData, TValue>({
   column,
   title,
+  queryParamKey,
   options,
 }: DataTableFacetedFilterProps<TData, TValue>) {
-  const facets = column?.getFacetedUniqueValues()
-  const selectedValues = new Set(column?.getFilterValue() as string[])
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  
+  const facets = column?.getFacetedUniqueValues();
+  const selectedValues = new Set(column?.getFilterValue() as string[]);
+  
+  // Function to update both table filter and URL query parameters
+  const updateFilters = (filterValues: string[] | undefined) => {
+    // Update table filter
+    column?.setFilterValue(filterValues);
+    
+    // Update URL query parameters
+    if (queryParamKey) {
+      const params = new URLSearchParams(searchParams.toString());
+      
+      if (!filterValues || filterValues.length === 0) {
+        // Remove the parameter if no values selected
+        params.delete(queryParamKey);
+      } else {
+        // Join multiple values with commas
+        params.set(queryParamKey, filterValues.join(','));
+      }
+      
+      // Build the new URL with updated query parameters
+      const url = params.toString() 
+        ? `${pathname}?${params}`
+        : pathname;
+        
+      // Update the URL without refreshing the page
+      router.push(url, { scroll: false });
+    }
+  };
+
+  // Sync URL parameters with filter state on component mount
+  React.useEffect(() => {
+    if (queryParamKey) {
+      const paramValue = searchParams.get(queryParamKey);
+      if (paramValue) {
+        const values = paramValue.split(',');
+        if (values.length > 0 && values.some(v => v !== '')) {
+          column?.setFilterValue(values);
+        }
+      }
+    }
+  }, [searchParams, queryParamKey, column]);
 
   return (
     <Popover>
@@ -85,15 +132,16 @@ export function DataTableFacetedFilter<TData, TValue>({
                   <CommandItem
                     key={option.value}
                     onSelect={() => {
+                      const newSelectedValues = new Set(selectedValues);
                       if (isSelected) {
-                        selectedValues.delete(option.value)
+                        newSelectedValues.delete(option.value)
                       } else {
-                        selectedValues.add(option.value)
+                        newSelectedValues.add(option.value)
                       }
-                      const filterValues = Array.from(selectedValues)
-                      column?.setFilterValue(
+                      const filterValues = Array.from(newSelectedValues)
+                      updateFilters(
                         filterValues.length ? filterValues : undefined
-                      )
+                      );
                     }}
                   >
                     <div
@@ -124,7 +172,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                 <CommandSeparator />
                 <CommandGroup>
                   <CommandItem
-                    onSelect={() => column?.setFilterValue(undefined)}
+                    onSelect={() => updateFilters(undefined)}
                     className="justify-center text-center"
                   >
                     Clear filters
