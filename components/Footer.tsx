@@ -1,4 +1,4 @@
-const Footer = () => {
+export function Footer() {
   return (
     <footer className="w-full text-center py-4 bg-gray-800 text-white text-sm">
       <p>&copy; {new Date().getFullYear()} SOS. All rights reserved.</p>
@@ -7,4 +7,3 @@ const Footer = () => {
   );
 };
 
-export default Footer;
