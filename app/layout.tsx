@@ -6,7 +6,7 @@ import { SiteHeader } from "@/components/site-header";
 import { FilterProvider } from "@/components/filter-context";
 import "./globals.css";
 
-import Footer from "@/components/footer";
+///import Footer from "@/components/footer";
 
 const geistSans = Geist({
   display: "swap",
@@ -37,9 +37,6 @@ export default function RootLayout({
               </SidebarProvider>
             </FilterProvider>
           </div>
-
-            {/* Custom Footer */}
-            <Footer />
           </div>
         </ThemeProvider>
       </body>
