@@ -7,7 +7,7 @@ import { FilterProvider } from "@/components/filter-context";
 import "./globals.css";
 import { Suspense } from "react";
 
-///import Footer from "@/components/footer";
+import Footer from "@/components/footer";
 
 const geistSans = Geist({
   display: "swap",

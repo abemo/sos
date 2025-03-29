@@ -1,4 +1,3 @@
-import { login, signup } from "./actions";
 import { LoginForm } from "@/components/login-form";
 
 // I would like this to be a pop up in the future, but for now it is a page.

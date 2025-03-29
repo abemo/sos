@@ -1,18 +1,39 @@
-import FirstVisitPopup from "@/components/first-visit-popup"; // may add first visit popup back in later
-import { AppSidebar } from "@/components/app-sidebar"
-import { SiteHeader } from "@/components/site-header"
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
+"use client";
+
+import { useState, useEffect } from "react";
+import Carousel from "@/components/carousel"; 
+import Link from "next/link";
 
 export default function Home() {
   return (
-    // Placeholder stuff for now
-    <div className="flex flex-1 flex-col gap-4 p-4">
-      <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-        <div className="aspect-video rounded-xl bg-muted/50" />
-        <div className="aspect-video rounded-xl bg-muted/50" />
-        <div className="aspect-video rounded-xl bg-muted/50" />
+    <div className="flex flex-col items-center gap-8 p-6 bg-black text-white">
+      <section className="text-center max-w-2xl">
+        <h1 className="text-3xl font-bold text-white">LINK</h1>
+        <h2 className="mt-2 text-xl text-gray-400">Helping Disaster Victims Find Support</h2>
+        <p className="mt-4 text-lg text-gray-300">
+          Access critical resources such as food, shelter, and medical aid. Our platform connects you to real-time 
+          assistance when you need it most.
+        </p>
+      </section>
+
+      <div className="w-full max-w-4xl">
+        <Carousel />
       </div>
-      <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
+
+      <section className="grid gap-6 md:grid-cols-2">
+        <Link href="/resources">
+          <div className="p-4 rounded-xl bg-gray-800 shadow-md text-center cursor-pointer">
+            <h2 className="font-semibold text-lg text-white">Find Resources</h2>
+            <p className="text-gray-400">Use our search and filtering tools to locate the help you need.</p>
+          </div>
+        </Link>
+        <div className="p-4 rounded-xl bg-gray-800 shadow-md text-center">
+          <Link href="/login"> 
+            <h2 className="font-semibold text-lg text-white">Sign Up for Account</h2>
+            <p className="text-gray-400">Save resources and get notified when new resources are available near you.</p>
+          </Link>
+        </div>
+      </section>
     </div>
   );
 }
