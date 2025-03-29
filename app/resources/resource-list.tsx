@@ -1,13 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getCoordinatesFromZip } from "@/utils/geocode";
 import { getDistance } from "@/utils/distance";
 
 type Resource = {
   id: string;
   name: string;
-  category: "housing" | "food" | "supplies" | "mental_health";
+  category: "housing" | "food" | "supplies" | "mental_health" | "donate" | "volunteer";
   latitude: number;
   longitude: number;
   active_start: string;
@@ -19,20 +18,29 @@ type Resource = {
 export default function ResourceList({ initialResources }: { initialResources: Resource[] }) {
   const [search, setSearch] = useState("");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [zipCode, setZipCode] = useState("");
-  const [maxDistance, setMaxDistance] = useState(15);  // Default max distance to 15 miles
+  const [maxDistance, setMaxDistance] = useState(15); // Default max distance to 15 miles
   const [userCoordinates, setUserCoordinates] = useState<{ latitude: number; longitude: number } | null>(null);
 
   useEffect(() => {
-    if (zipCode) {
-      getCoordinatesFromZip(zipCode)
-        .then((coords) => setUserCoordinates(coords))
-        .catch((error) => {
-          console.error("Error fetching coordinates:", error);
-          setUserCoordinates(null);
-        });
+    if (!userCoordinates) {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            setUserCoordinates({
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            });
+          },
+          (error) => {
+            console.error("Error fetching geolocation:", error);
+            setUserCoordinates(null);
+          }
+        );
+      } else {
+        console.error("Geolocation is not supported by this browser.");
+      }
     }
-  }, [zipCode]);
+  }, [userCoordinates]);
 
   // Filter resources based on search, categories, and distance
   const filteredResources = initialResources.filter((res) => {
@@ -42,7 +50,7 @@ export default function ResourceList({ initialResources }: { initialResources: R
     let withinDistance = true;
     if (userCoordinates) {
       const distance = getDistance(userCoordinates.latitude, userCoordinates.longitude, res.latitude, res.longitude);
-      withinDistance = distance <= maxDistance;  // Check if the resource is within the max distance
+      withinDistance = distance <= maxDistance; // Check if the resource is within the max distance
     }
 
     return matchesCategory && matchesSearch && withinDistance;
@@ -74,7 +82,7 @@ export default function ResourceList({ initialResources }: { initialResources: R
 
       {/* Category Filter */}
       <div className="flex gap-4 mb-4">
-        {["housing", "food", "supplies", "mental_health"].map((cat) => (
+        {["housing", "food", "supplies", "mental_health", "donate", "volunteer"].map((cat) => (
           <label key={cat} className="flex items-center gap-2">
             <input
               type="checkbox"
@@ -87,19 +95,13 @@ export default function ResourceList({ initialResources }: { initialResources: R
         ))}
       </div>
 
-      {/* Zip Code and Distance Filter */}
+      {/* Distance Filter */}
       <div className="mb-4">
-        <label className="block text-sm font-semibold">Enter your Zip Code:</label>
-        <input
-          type="text"
-          value={zipCode}
-          onChange={(e) => setZipCode(e.target.value)}
-          placeholder="Zip Code"
-          className="w-32 p-2 border rounded mt-2"
-        />
-
         <div className="mt-4">
           <label className="block text-sm font-semibold">Set Max Distance (miles): {maxDistance} miles</label>
+          {userCoordinates && (
+            <label className="block text-sm font-semibold">Current lat: {userCoordinates.latitude} current long: {userCoordinates.longitude}</label>
+          )}
           <input
             type="range"
             min="1"
@@ -126,7 +128,7 @@ export default function ResourceList({ initialResources }: { initialResources: R
             <li key={res.id} className="p-4 border rounded">
               <h2 className="text-lg font-semibold">{res.name}</h2>
               <p className="text-sm">{res.description}</p>
-              <a href={res.web_url} target="_blank" className="text-blue-500 underline">More Info</a>
+              <a href={res.web_url} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">More Info</a>
             </li>
           ))
         ) : (
