@@ -2,6 +2,7 @@
 
 import { useFilterContext } from "@/components/filter-context"
 import { useRouter, usePathname, useSearchParams } from "next/navigation"
+import { Suspense } from 'react'
 import { Menu, Home, Apple, Settings, Handshake, HandCoins, Heart, Search} from "lucide-react"
 import Link from "next/link"
 import {
@@ -73,7 +74,6 @@ const giveItems = [
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {  
   const { setFilterSidebar } = useFilterContext();
   const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
   
   // Function to handle category click and set query parameters
