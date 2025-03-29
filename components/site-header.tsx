@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { SidebarIcon } from "lucide-react"
 import { createClient } from "@/utils/supabase/client"
 import Link from "next/link"
-import { SearchForm } from "@/components/search-form"
+// import { SearchForm } from "@/components/search-form"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -69,9 +69,9 @@ export function SiteHeader() {
           </BreadcrumbList>
         </Breadcrumb>
 
-        <SearchForm className="w-full sm:ml-auto sm:w-auto" />
+        {/* <SearchForm className="w-full sm:ml-auto sm:w-auto" /> */}
 
-        <Button asChild>
+        <Button asChild className="w-full sm:ml-auto sm:w-auto">
           <Link href={isLoggedIn ? "/account" : "/login"}>
             {isLoggedIn ? "Account" : "Log in"}
           </Link>
