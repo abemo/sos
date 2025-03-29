@@ -13,6 +13,16 @@ import {
   TableCell
 } from "@/components/ui/table";
 
+import { Button } from "@/components/ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
 type Resource = {
   id: string;
   name: string;

@@ -1,5 +1,10 @@
-import { Menu, Home, Apple, Settings, Handshake, HandCoins, Heart} from "lucide-react"
+"use client"
 
+import { useFilterContext } from "@/components/filter-context"
+import { useRouter, usePathname, useSearchParams } from "next/navigation"
+import { Suspense } from 'react'
+import { Menu, Home, Apple, Settings, Handshake, HandCoins, Heart, Search} from "lucide-react"
+import Link from "next/link"
 import {
   Sidebar,
   SidebarContent,
@@ -12,8 +17,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { title } from "process"
-import { url } from "inspector"
 
 const homeGroup = {
     title: "Home",
@@ -21,48 +24,94 @@ const homeGroup = {
     icon: Menu,
 }
 
-// Maybe use a pop up instead? its called a popover. I'd like to use it for the settings button.
 const settingsGroup = {
     title: "Settings",
-    url: "/settings",
+    url: "/pages/settings",
     icon: Settings,
 }
-
-
 
 // Menu items.
 const aidItems = [
   {
+    title: "All Resources",
+    url: "/pages/resources",
+    icon: Search,
+    filterValue: "",
+  },
+  {
     title: "Housing",
-    url: "housing",
+    url: "/pages/housing",
     icon: Home,
+    filterValue: "Housing",
   },
   {
     title: "Food",
-    url: "food",
+    url: "/pages/food",
     icon: Apple,
+    filterValue: "Food",
   },
   {
     title: "Wellness",
-    url: "wellness",
+    url: "/pages/wellness",
     icon: Heart,
+    filterValue: "Wellness",
   },
 ]
 
 const giveItems = [
     {
         title: "Donate",
-        url: "donate",
+        url: "/pages/donate",
         icon: HandCoins,
       },
       {
         title: "Volunteer",
-        url: "volunteer",
+        url: "/pages/volunteer",
         icon: Handshake,
       },  
 ]
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {  return (
+export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {  
+  const { setFilterSidebar } = useFilterContext();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  
+  // Function to handle category click and set query parameters
+  interface AidItem {
+    title: string;
+    url: string;
+    icon: React.ComponentType;
+    filterValue: string;
+  }
+
+  const handleCategoryClick = (
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, 
+    item: AidItem
+  ): void => {
+    // Prevent default behavior of the Link
+    e.preventDefault();
+    
+    // Create a new URLSearchParams object based on the current params
+    const params = new URLSearchParams(searchParams.toString());
+    
+    if (item.filterValue === "") {
+      // Clear the filter parameter for "All Resources"
+      params.delete("category");
+    } else {
+      // Set the filter parameter to the selected category
+      params.set("category", item.filterValue.toLowerCase());
+    }
+    
+    // Update the filter context as well
+    setFilterSidebar([{id: "category", value: item.filterValue}]);
+    
+    // Navigate to the resources page with query parameters
+    const queryString = params.toString();
+    const url = queryString ? `/resources?${queryString}` : "/resources";
+    router.push(url);
+  };
+
+  return (
     <Sidebar
       className="top-[--header-height] !h-[calc(100svh-var(--header-height))]"
       {...props}
@@ -83,10 +132,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               {aidItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
+                    <Link 
+                      href="/resources" 
+                      onClick={(e) => handleCategoryClick(e, item)}
+                    >
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -110,7 +162,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 </SidebarMenu>
             </SidebarGroupContent>
         </SidebarGroup>
-        {/* Footer: This can be changed to SidebarFooter, but it overlaps with supabase icon */}
         <SidebarGroup>
             <SidebarMenuButton asChild>
                 <a href={settingsGroup.url}>
@@ -120,7 +171,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 </SidebarMenuButton>
             </SidebarGroup>
       </SidebarContent>
-
     </Sidebar>
   )
 }
