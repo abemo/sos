@@ -1,7 +1,7 @@
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/utils/supabase/client";
 
 export async function getData() {
-  const supabase = await createClient();  // Await the client creation
+  const supabase = createClient();  // Await the client creation
 
   // Get current timestamp
   const now = new Date().toISOString();

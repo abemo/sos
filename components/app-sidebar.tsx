@@ -1,9 +1,8 @@
 "use client"
 
 import { useFilterContext } from "@/components/filter-context"
-
+import { useRouter, usePathname, useSearchParams } from "next/navigation"
 import { Menu, Home, Apple, Settings, Handshake, HandCoins, Heart, Search} from "lucide-react"
-
 import Link from "next/link"
 import {
   Sidebar,
@@ -17,7 +16,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { it } from "node:test"
 
 const homeGroup = {
     title: "Home",
@@ -25,7 +23,6 @@ const homeGroup = {
     icon: Menu,
 }
 
-// Maybe use a pop up instead? its called a popover. I'd like to use it for the settings button.
 const settingsGroup = {
     title: "Settings",
     url: "/pages/settings",
@@ -75,7 +72,44 @@ const giveItems = [
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {  
   const { setFilterSidebar } = useFilterContext();
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  
+  // Function to handle category click and set query parameters
+  interface AidItem {
+    title: string;
+    url: string;
+    icon: React.ComponentType;
+    filterValue: string;
+  }
 
+  const handleCategoryClick = (
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, 
+    item: AidItem
+  ): void => {
+    // Prevent default behavior of the Link
+    e.preventDefault();
+    
+    // Create a new URLSearchParams object based on the current params
+    const params = new URLSearchParams(searchParams.toString());
+    
+    if (item.filterValue === "") {
+      // Clear the filter parameter for "All Resources"
+      params.delete("filter");
+    } else {
+      // Set the filter parameter to the selected category
+      params.set("filter", item.filterValue.toLowerCase());
+    }
+    
+    // Update the filter context as well
+    setFilterSidebar([{id: "category", value: item.filterValue}]);
+    
+    // Navigate to the resources page with query parameters
+    const queryString = params.toString();
+    const url = queryString ? `/resources?${queryString}` : "/resources";
+    router.push(url);
+  };
 
   return (
     <Sidebar
@@ -97,9 +131,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarMenu>
               {aidItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild
+                  <SidebarMenuButton asChild>
+                    <Link 
+                      href="/resources" 
+                      onClick={(e) => handleCategoryClick(e, item)}
                     >
-                    <Link href={"/pages/food"} onClick={() => setFilterSidebar([{id: "category", value: item.filterValue}])}>
                       <item.icon />
                       <span>{item.title}</span>
                     </Link>
@@ -126,7 +162,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 </SidebarMenu>
             </SidebarGroupContent>
         </SidebarGroup>
-        {/* Footer: This can be changed to SidebarFooter, but it overlaps with supabase icon */}
         <SidebarGroup>
             <SidebarMenuButton asChild>
                 <a href={settingsGroup.url}>
@@ -136,7 +171,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 </SidebarMenuButton>
             </SidebarGroup>
       </SidebarContent>
-
     </Sidebar>
   )
 }

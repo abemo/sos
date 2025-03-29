@@ -52,7 +52,7 @@ export function DataTable<TData, TValue>({
   const { filterSidebar } = useFilterContext();
 
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    filterSidebar
+    [{id: "category", value: "Food"}]
   )
 
   console.log("filterSidebar", filterSidebar[0].value)
@@ -80,6 +80,9 @@ export function DataTable<TData, TValue>({
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
   })
+
+  // Remove or replace this line with appropriate logic if needed
+  // Example: You can set a filter value using the table's API if required
 
   return (
     <div className="space-y-4">

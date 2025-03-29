@@ -1,24 +1,31 @@
-import { createClient } from "@/utils/supabase/server";
-import ResourceList from "./resource-list";
+"use client"
 
-export default async function ResourcesPage() {
-  const supabase = await createClient();  // Await the client creation
 
-  // Get current timestamp
-  const now = new Date().toISOString();
+import { columns } from "@/components/columns"
+import { DataTable } from "@/components/data-table"
+import { getData } from "@/components/get-data"
+import { useEffect, useState } from "react"
 
-  // Fetch only active resources
-  const { data: resources, error } = await supabase
-    .from("fire_resources")
-    .select("*")
-    .gte("active_end", now)  // active_end ≥ now
-    .lte("active_start", now); // active_start ≤ now
 
-  if (error) {
-    console.error("Error fetching resources:", error);
-    return <p>Failed to load resources.</p>;
-  }
+export default function Page() {
+  // make a resource type
+  const [resources, setResources] = useState<any[] | null>(null)
 
-  return <ResourceList initialResources={resources} />;
+
+  useEffect(() => {
+    console.log('running useEffect')
+    void (async () => {
+      if (!resources) {
+        const data = await getData()
+        setResources(data)
+      }
+    })()
+  } , [])
+  
+  /// need to change styling to work with mobile instead of disappearing
+  return (
+    <div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
+      <DataTable data={resources ?? []} columns={columns} />
+    </div>
+  )
 }
-
