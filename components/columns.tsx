@@ -65,7 +65,7 @@ export const columns: ColumnDef<Resource>[] = [
   {
     accessorKey: "Distance",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Distance" />
+      <DataTableColumnHeader column={column} title="Distance"/>
     ),
     
     cell: ({ row }) => <div className="w-[80px]">{row.getValue("Distance")}</div>,
