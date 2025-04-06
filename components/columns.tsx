@@ -63,35 +63,11 @@ export const columns: ColumnDef<Resource>[] = [
     },
   },
   {
-    accessorKey: "location_area",
+    accessorKey: "Distance",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Location" />
+      <DataTableColumnHeader column={column} title="Distance" />
     ),
-    cell: ({ row }) => {
-      const location = locations.find(
-        (location) => location.value === row.getValue("location_area")
-      )
-
-      if (!location) {
-        return null
-      }
-
-      return (
-        <div className="flex w-[100px] items-center">
-          <span>{location.label}</span>
-        </div>
-      )
-    },
-    // Update the filter function for location to use OR logic
-    filterFn: (row, id, value) => {
-      // If no filters selected, show all rows
-      if (!value || value.length === 0) return true;
-      
-      // Get the row's location value
-      const rowValue = row.getValue(id);
-      
-      // Return true if the row's location matches any selected filter values
-      return value.includes(rowValue);
-    },
+    
+    cell: ({ row }) => <div className="w-[80px]">{row.getValue("Distance")}</div>,
   },
 ]

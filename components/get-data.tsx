@@ -19,5 +19,5 @@ export async function getData() {
     throw new Error("Failed to load resources");
   }
 
-  return resources;
+  return resources; 
 }

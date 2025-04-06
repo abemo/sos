@@ -14,6 +14,7 @@ export const resourceSchema = z.object({
   web_url: z.string(),
   email: z.string(),
   location_area: z.string(),
+  distance: z.number(),
 })
 
 export type Resource = z.infer<typeof resourceSchema>
