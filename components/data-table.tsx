@@ -45,7 +45,9 @@ export function DataTable<TData, TValue>({
       name: true,
       description: true,
       category: false, // default made category hidden
-      location: false, // For now making location hidden (doesn't do anytthing lol)
+      distance: true,
+      latitude: false,
+      longitude: false,
     })
 
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
