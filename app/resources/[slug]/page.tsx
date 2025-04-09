@@ -1,6 +1,9 @@
 //Individual page for each resource
+import Resource from "@/components/resource"
+import { useEffect, useState } from "react"
 
 // 1. Need to call DB to fetch this resource
+
 
 export default async function Page({
   params,
@@ -8,5 +11,6 @@ export default async function Page({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
-  return <div>Resource: {slug}</div>
+
+  return <Resource slug={slug} />
 }

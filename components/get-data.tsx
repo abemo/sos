@@ -1,6 +1,13 @@
 import { createClient } from "@/utils/supabase/client";
 
-export async function getData() {
+export async function getData({
+  table,
+  query = "*",
+}: { table?: string; query?: string } = {}) {
+  if (!table) {
+    throw new Error("Table name is required to fetch data.");
+  } 
+
   const supabase = createClient();  // Await the client creation
 
   // Get current timestamp
@@ -8,10 +15,10 @@ export async function getData() {
 
   // Fetch only active resources
   const { data: resources, error } = await supabase
-    .from("resources_short")
-    .select("*")
-/*     .gte("active_end", now)  // active_end ≥ now 
-    .lte("active_start", now); // active_start ≤ now  FOR NOW JUST GETTING EVERYTHING I THINK */
+    .from(table)
+    .select(query);
+  /* .gte("active_end", now)  // active_end ≥ now 
+     .lte("active_start", now); // active_start ≤ now  FOR NOW JUST GETTING EVERYTHING I THINK */
 
   console.log(resources);
   if (error) {

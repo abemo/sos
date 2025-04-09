@@ -17,7 +17,7 @@ export default function Page() {
     console.log('running useEffect')
     void (async () => {
       if (!resources) {
-        const data = await getData()
+        const data = await getData({ table: "resources_short" })
         setResources(data)
       }
     })()

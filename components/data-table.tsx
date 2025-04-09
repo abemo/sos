@@ -36,6 +36,11 @@ interface DataTableProps<TData, TValue> {
   data: TData[]
 }
 
+function generateSlug(name: string): string {
+  // Replace spaces with hyphens and convert to lowercase
+  return name.replace(/\s+/g, "-").toLowerCase()
+}
+
 export function DataTable<TData, TValue>({
   columns,
   data,
@@ -113,7 +118,7 @@ export function DataTable<TData, TValue>({
                 data-state={row.getIsSelected() && "selected"}
                 className="cursor-pointer hover:bg-slate-100 data-[state=selected]:bg-slate-100"
                 onClick={() => {
-                const slug = row.original; // (Slug will be a unique identifier pulled from DB)
+                const slug = generateSlug(row.getValue("name")); // (Slug will be a unique identifier pulled from DB)
                 window.location.href = `/resources/${slug}`;
                 }}
               >
