@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import  Link from "next/link"
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -29,7 +30,6 @@ import {
 
 import { DataTablePagination } from "./data-table-pagination"
 import { DataTableToolbar } from "./data-table-toolbar"
-import { Link } from "lucide-react"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -113,6 +113,7 @@ export function DataTable<TData, TValue>({
             <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
+
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
@@ -124,13 +125,17 @@ export function DataTable<TData, TValue>({
               >
                 {row.getVisibleCells().map((cell) => (
                 <TableCell key={cell.id}>
-                  {flexRender(
-                  cell.column.columnDef.cell,
-                  cell.getContext()
-                  )}
-                </TableCell>
+                  <Link href={`/resources/${row.getValue("name")}`} key={row.id}>
+
+                    {flexRender(
+                    cell.column.columnDef.cell,
+                    cell.getContext()
+                    )}
+                  </Link>
+                </TableCell>  
                 ))}
               </TableRow>
+
               ))
             ) : (
               <TableRow>
