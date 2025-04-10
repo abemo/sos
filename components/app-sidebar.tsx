@@ -18,10 +18,11 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 
-const homeGroup = {
-    title: "Home",
-    url: "/",
-    icon: Menu,
+const allResources = {
+    title: "All Resources",
+    url: "/pages/resources",
+    icon: Search,
+    filterValue: "",
 }
 
 const settingsGroup = {
@@ -32,12 +33,6 @@ const settingsGroup = {
 
 // Menu items.
 const aidItems = [
-  {
-    title: "All Resources",
-    url: "/pages/resources",
-    icon: Search,
-    filterValue: "",
-  },
   {
     title: "Housing",
     url: "/pages/housing",
@@ -117,11 +112,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       {...props}
     >
       <SidebarHeader>
-          <SidebarMenuButton asChild>
-              <a href={homeGroup.url}>
-              <homeGroup.icon />
-              <span>{homeGroup.title}</span>
-              </a>
+      <SidebarMenuButton asChild>
+            <Link 
+              href="/resources" 
+              onClick={(e) => handleCategoryClick(e, allResources)}
+            >
+              <allResources.icon />
+              <span>{allResources.title}</span>
+            </Link>
           </SidebarMenuButton>
         </SidebarHeader>
         <SidebarContent>
