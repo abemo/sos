@@ -1,6 +1,5 @@
 "use client"
 
-
 import { columns } from "@/components/columns"
 import { DataTable } from "@/components/data-table"
 import { getData } from "@/components/get-data"
