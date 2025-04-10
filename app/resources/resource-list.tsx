@@ -15,7 +15,7 @@ type Resource = {
   web_url: string;
 };
 
-export default function ResourceList({ initialResources }: { initialResources: Resource[] }) {
+export default function ResourceList({ initialResources }: { readonly initialResources: readonly Resource[] }) {
   const [search, setSearch] = useState("");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [maxDistance, setMaxDistance] = useState(15); // Default max distance to 15 miles
