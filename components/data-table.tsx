@@ -17,8 +17,6 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 
-import { useFilterContext } from "@/components/filter-context"
-
 import {
   Table,
   TableBody,
