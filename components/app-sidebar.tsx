@@ -1,6 +1,5 @@
 "use client"
 
-import { useFilterContext } from "@/components/filter-context"
 import { useRouter, usePathname, useSearchParams } from "next/navigation"
 import { Suspense } from 'react'
 import { Menu, Home, Apple, Settings, Handshake, HandCoins, Heart, Search, BookMarked} from "lucide-react"
@@ -70,7 +69,6 @@ const giveItems = [
 ]
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {  
-  const { setFilterSidebar } = useFilterContext();
   const router = useRouter();
   const searchParams = useSearchParams();
   
@@ -101,7 +99,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     }
     
     // Update the filter context as well
-    setFilterSidebar([{id: "category", value: item.filterValue}]);
     
     // Navigate to the resources page with query parameters
     const queryString = params.toString();
@@ -140,7 +137,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <Link 
-                      href="/resources" 
+                      href={item.url} 
                       onClick={(e) => handleCategoryClick(e, item)}
                     >
                       <item.icon />
@@ -160,7 +157,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <Link 
-                      href="/resources" 
+                      href={item.url} 
                       onClick={(e) => handleCategoryClick(e, item)}
                     >
                       <item.icon />

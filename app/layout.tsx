@@ -4,7 +4,6 @@ import { ThemeProvider } from "next-themes";
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { SiteHeader } from "@/components/site-header";
-import { FilterProvider } from "@/components/filter-context";
 import "./globals.css";
 import { Suspense } from "react";
 
@@ -27,18 +26,16 @@ export default function RootLayout({
           <div className="flex flex-col min-h-screen w-full">
           <div className="[--header-height:calc(theme(spacing.14))]">
             <Suspense fallback={<div className="flex-1 w-full" />}>
-              <FilterProvider>
-                <SidebarProvider className="flex flex-col">
-                  <SiteHeader />
-                  <div className="flex flex-1">
-                    <AppSidebar />
-                    <SidebarInset>
-                      {/* main content */}
-                      <main className="flex-1 w-full">{children}</main>
-                    </SidebarInset>
-                  </div>
-                </SidebarProvider>
-              </FilterProvider>
+              <SidebarProvider className="flex flex-col">
+                <SiteHeader />
+                <div className="flex flex-1">
+                  <AppSidebar />
+                  <SidebarInset>
+                    {/* main content */}
+                    <main className="flex-1 w-full">{children}</main>
+                  </SidebarInset>
+                </div>
+              </SidebarProvider>
             </Suspense>
 
           </div>
