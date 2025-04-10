@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import  Link from "next/link"
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -35,6 +36,11 @@ interface DataTableProps<TData, TValue> {
   data: TData[]
 }
 
+function generateSlug(name: string): string {
+  // Replace spaces with hyphens and convert to lowercase
+  return name.replace(/\s+/g, "-").toLowerCase()
+}
+
 export function DataTable<TData, TValue>({
   columns,
   data,
@@ -45,14 +51,14 @@ export function DataTable<TData, TValue>({
       name: true,
       description: true,
       category: false, // default made category hidden
-      location: false, // For now making location hidden
+      distance: true,
+      latitude: false,
+      longitude: false,
     })
 
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   )
-
-  //{id: "category", value: []}
 
   const [sorting, setSorting] = React.useState<SortingState>([])
 
@@ -104,22 +110,32 @@ export function DataTable<TData, TValue>({
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody>
+            <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
+
+              <TableRow
+                key={row.id}
+                data-state={row.getIsSelected() && "selected"}
+                className="cursor-pointer hover:bg-slate-100 data-[state=selected]:bg-slate-100"
+                onClick={() => {
+                const slug = generateSlug(row.getValue("name")); // (Slug will be a unique identifier pulled from DB)
+                window.location.href = `/resources/${slug}`;
+                }}
+              >
+                {row.getVisibleCells().map((cell) => (
+                <TableCell key={cell.id}>
+                  <Link href={`/resources/${row.getValue("name")}`} key={row.id}>
+
+                    {flexRender(
+                    cell.column.columnDef.cell,
+                    cell.getContext()
+                    )}
+                  </Link>
+                </TableCell>  
+                ))}
+              </TableRow>
+
               ))
             ) : (
               <TableRow>

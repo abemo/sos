@@ -1,14 +1,68 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
+import { useMemo } from "react"
 
 import { Badge } from "@/components/ui/badge"
 
 import { categories, locations } from "@/app/data/data"
-// for now we are gonna uses statuses in the location column
 import { Resource } from "@/app/data/schema"
 import { DataTableColumnHeader } from "./data-table-column-header"
 
+// Helper function to calculate distance between two coordinates using the Haversine formula
+function calculateDistance(
+  lat1: number, 
+  lon1: number, 
+  lat2: number, 
+  lon2: number
+): number {
+  const R = 6371; // Radius of the Earth in kilometers
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  
+  const a = 
+    Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+    Math.sin(dLon/2) * Math.sin(dLon/2);
+  
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  const distance = R * c; // Distance in kilometers
+  
+  return Math.round(distance * 10) / 10; // Round to 1 decimal place
+}
+
+// Component to display distance based on user location and resource location
+const DistanceCell = ({ row }: { row: any }) => {
+  const userCoordinates = useMemo(() => {
+    // Try to get coordinates from localStorage or other state management
+    // This assumes you're storing the user coordinates somewhere accessible
+    try {
+      const storedCoords = localStorage.getItem('userCoordinates');
+      if (storedCoords) {
+        return JSON.parse(storedCoords);
+      }
+    } catch (e) {
+      console.error("Failed to get user coordinates:", e);
+    }
+    return null;
+  }, []);
+  
+  const resourceLat = row.original.latitude || row.getValue("latitude");
+  const resourceLng = row.original.longitude || row.getValue("longitude");
+  
+  if (!userCoordinates || !resourceLat || !resourceLng) {
+    return <div className="w-[80px]">--</div>;
+  }
+  
+  const distance = calculateDistance(
+    userCoordinates.latitude, 
+    userCoordinates.longitude, 
+    resourceLat, 
+    resourceLng
+  );
+  
+  return <div className="w-[80px]">{distance} km</div>;
+};
 
 export const columns: ColumnDef<Resource>[] = [
   {
@@ -50,48 +104,74 @@ export const columns: ColumnDef<Resource>[] = [
 
       return <div>{category?.label}</div>
     },
-    // Add OR filter function for category
     filterFn: (row, id, value) => {
-      // If no filters selected, show all rows
       if (!value || value.length === 0) return true;
-      
-      // Get the row's category value
       const rowValue = row.getValue(id);
-      
-      // Return true if the row's category matches any selected filter values
       return value.includes(rowValue);
     },
   },
   {
-    accessorKey: "location_area",
+    accessorKey: "distance",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Location" />
+      <DataTableColumnHeader column={column} title="Distance" />
     ),
-    cell: ({ row }) => {
-      const location = locations.find(
-        (location) => location.value === row.getValue("location_area")
-      )
-
-      if (!location) {
-        return null
-      }
-
-      return (
-        <div className="flex w-[100px] items-center">
-          <span>{location.label}</span>
-        </div>
-      )
-    },
-    // Update the filter function for location to use OR logic
-    filterFn: (row, id, value) => {
-      // If no filters selected, show all rows
-      if (!value || value.length === 0) return true;
+    cell: DistanceCell,
+    // Custom sorting function to sort by calculated distance
+    sortingFn: (rowA, rowB) => {
+      const userCoordinates = (() => {
+        try {
+          const storedCoords = localStorage.getItem('userCoordinates');
+          if (storedCoords) {
+            return JSON.parse(storedCoords);
+          }
+        } catch (e) {
+          console.error("Failed to get user coordinates:", e);
+        }
+        return null;
+      })();
       
-      // Get the row's location value
-      const rowValue = row.getValue(id);
+      if (!userCoordinates) return 0;
       
-      // Return true if the row's location matches any selected filter values
-      return value.includes(rowValue);
-    },
+      const latA = rowA.original.latitude;
+      const lngA = rowA.original.longitude;
+      const latB = rowB.original.latitude;
+      const lngB = rowB.original.longitude;
+      
+      if (!latA || !lngA || !latB || !lngB) return 0;
+      
+      const distanceA = calculateDistance(
+        userCoordinates.latitude, 
+        userCoordinates.longitude, 
+        latA, 
+        lngA
+      );
+      
+      const distanceB = calculateDistance(
+        userCoordinates.latitude, 
+        userCoordinates.longitude, 
+        latB, 
+        lngB
+      );
+      
+      return distanceA - distanceB;
+    }
+  },
+  // Keep the original latitude/longitude columns if needed
+  // Or you can hide them by default
+  {
+    accessorKey: "latitude",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Latitude" />
+    ),
+    cell: ({ row }) => <div>{row.getValue("latitude")}</div>,
+    enableHiding: true,
+  },
+  {
+    accessorKey: "longitude",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Longitude" />
+    ),
+    cell: ({ row }) => <div>{row.getValue("longitude")}</div>,
+    enableHiding: true,
   },
 ]

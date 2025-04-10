@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Carousel from "@/components/carousel"; 
 import Link from "next/link";
 

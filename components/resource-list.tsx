@@ -33,6 +33,7 @@ type Resource = {
   active_end: string;
   description: string;
   web_url: string;
+  distance: number;
 };
 
 export default function ResourceList({ initialResources }: { initialResources: Resource[] }) {

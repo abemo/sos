@@ -1,3 +1,4 @@
+"use client";
 import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
@@ -7,7 +8,6 @@ import { FilterProvider } from "@/components/filter-context";
 import "./globals.css";
 import { Suspense } from "react";
 
-import Footer from "@/components/footer";
 
 const geistSans = Geist({
   display: "swap",
@@ -19,6 +19,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="en" className={geistSans.className} suppressHydrationWarning>
       <body className="bg-background text-foreground">
