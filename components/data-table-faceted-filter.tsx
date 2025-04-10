@@ -75,6 +75,8 @@ export function DataTableFacetedFilter<TData, TValue>({
         if (values.length > 0 && values.some(v => v !== '')) {
           column?.setFilterValue(values);
         }
+      } else {
+        column?.setFilterValue(undefined); // Clear filter if param is not present
       }
     }
   }, [searchParams, queryParamKey, column]);

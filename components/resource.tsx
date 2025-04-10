@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from 'react'
-import { getData } from "@/components/get-data"
+import { useSidebar } from "@/components/ui/sidebar"
 
 // Mock data to use until your DB is ready
 const getMockData = (slug: string) => {
@@ -23,6 +23,14 @@ const getMockData = (slug: string) => {
 export default function Resource({ slug }: Readonly<{ slug: string }>) {
   const [resourceData, setResourceData] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(true)
+
+  const { toggleSidebar, open } = useSidebar()
+
+  useEffect(() => {
+    if (!open) {
+      toggleSidebar()
+    }
+  }, [])
 
   useEffect(() => {
     void (async () => {

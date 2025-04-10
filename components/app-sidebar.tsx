@@ -137,7 +137,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <Link 
-                      href="/resources" 
+                      href={item.url} 
                       onClick={(e) => handleCategoryClick(e, item)}
                     >
                       <item.icon />
@@ -157,7 +157,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <Link 
-                      href="/resources" 
+                      href={item.url} 
                       onClick={(e) => handleCategoryClick(e, item)}
                     >
                       <item.icon />

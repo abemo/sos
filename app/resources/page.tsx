@@ -11,10 +11,12 @@ import { useSidebar } from "@/components/ui/sidebar"
 
 
 export default function Page() {
-  const { toggleSidebar } = useSidebar()
+  const { toggleSidebar, open } = useSidebar()
 
   useEffect(() => {
-    toggleSidebar()
+    if (!open) {
+      toggleSidebar()
+    }
   }, [])
 
 
