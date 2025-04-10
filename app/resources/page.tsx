@@ -6,15 +6,24 @@ import { DataTable } from "@/components/data-table"
 import { getData } from "@/components/get-data"
 import { LocationPopup } from "@/components/location-popup"
 import { useEffect, useState } from "react"
+import { useSidebar } from "@/components/ui/sidebar"
+
+
 
 
 export default function Page() {
+  const { toggleSidebar } = useSidebar()
+
+  useEffect(() => {
+    toggleSidebar()
+  }, [])
+
+
   // make a resource type
   const [resources, setResources] = useState<any[] | null>(null)
 
-
   useEffect(() => {
-    console.log('running useEffect')
+    console.log('getting data')
     void (async () => {
       if (!resources) {
         const data = await getData({ table: "resources_short" })
