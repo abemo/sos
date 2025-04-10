@@ -5,7 +5,7 @@ import { useMemo } from "react"
 
 import { Badge } from "@/components/ui/badge"
 
-import { categories, locations } from "@/app/data/data"
+import { categories } from "@/app/data/data"
 import { Resource } from "@/app/data/schema"
 import { DataTableColumnHeader } from "./data-table-column-header"
 

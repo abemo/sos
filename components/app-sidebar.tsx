@@ -3,7 +3,7 @@
 import { useFilterContext } from "@/components/filter-context"
 import { useRouter, usePathname, useSearchParams } from "next/navigation"
 import { Suspense } from 'react'
-import { Menu, Home, Apple, Settings, Handshake, HandCoins, Heart, Search} from "lucide-react"
+import { Menu, Home, Apple, Settings, Handshake, HandCoins, Heart, Search, BookMarked} from "lucide-react"
 import Link from "next/link"
 import {
   Sidebar,
@@ -19,51 +19,54 @@ import {
 } from "@/components/ui/sidebar"
 
 const allResources = {
-    title: "All Resources",
-    url: "/pages/resources",
-    icon: Search,
-    filterValue: "",
+  title: "All Resources",
+  url: "/resources",
+  icon: Search,
+  filterValue: "",
 }
 
-const settingsGroup = {
-    title: "Settings",
-    url: "/pages/settings",
-    icon: Settings,
+/// my resources/saved resources
+const myResources = {
+  title: "My Resources",
+  url: "/protected",
+  icon: BookMarked,
 }
 
 // Menu items.
 const aidItems = [
   {
     title: "Housing",
-    url: "/pages/housing",
+    url: "/resources",
     icon: Home,
     filterValue: "Housing",
   },
   {
     title: "Food",
-    url: "/pages/food",
+    url: "/resources",
     icon: Apple,
     filterValue: "Food",
   },
   {
     title: "Wellness",
-    url: "/pages/wellness",
+    url: "/resources",
     icon: Heart,
     filterValue: "Wellness",
   },
 ]
 
 const giveItems = [
-    {
-        title: "Donate",
-        url: "/pages/donate",
-        icon: HandCoins,
-      },
-      {
-        title: "Volunteer",
-        url: "/pages/volunteer",
-        icon: Handshake,
-      },  
+  {
+    title: "Donate",
+    url: "/resources",
+    icon: HandCoins,
+    filterValue: "Donate",
+  },
+  {
+    title: "Volunteer",
+    url: "/resources",
+    icon: Handshake,
+    filterValue: "Volunteer",
+  },  
 ]
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {  
@@ -112,17 +115,23 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       {...props}
     >
       <SidebarHeader>
-      <SidebarMenuButton asChild>
-            <Link 
-              href="/resources" 
-              onClick={(e) => handleCategoryClick(e, allResources)}
-            >
-              <allResources.icon />
-              <span>{allResources.title}</span>
-            </Link>
-          </SidebarMenuButton>
-        </SidebarHeader>
-        <SidebarContent>
+        <SidebarMenuButton asChild>
+          <Link 
+            href="/resources" 
+            onClick={(e) => handleCategoryClick(e, allResources)}
+          >
+            <allResources.icon />
+            <span>{allResources.title}</span>
+          </Link>
+        </SidebarMenuButton>
+        <SidebarMenuButton asChild>
+          <a href={myResources.url}>
+            <myResources.icon />
+            <span>{myResources.title}</span>
+            </a>
+        </SidebarMenuButton>
+      </SidebarHeader>
+      <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Find</SidebarGroupLabel>
           <SidebarGroupContent>
@@ -145,29 +154,24 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarGroup>
         <SidebarGroup>
         <SidebarGroupLabel>Give</SidebarGroupLabel>
-            <SidebarGroupContent>
-                <SidebarMenu>
-                {giveItems.map((item) => (
-                    <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild>
-                        <a href={item.url}>
-                        <item.icon />
-                        <span>{item.title}</span>
-                        </a>
-                    </SidebarMenuButton>
-                    </SidebarMenuItem>
-                ))}
-                </SidebarMenu>
-            </SidebarGroupContent>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {giveItems.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild>
+                    <Link 
+                      href="/resources" 
+                      onClick={(e) => handleCategoryClick(e, item)}
+                    >
+                      <item.icon />
+                      <span>{item.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
         </SidebarGroup>
-        <SidebarGroup>
-            <SidebarMenuButton asChild>
-                <a href={settingsGroup.url}>
-                    <settingsGroup.icon />
-                    <span>{settingsGroup.title}</span>
-                    </a>
-                </SidebarMenuButton>
-            </SidebarGroup>
       </SidebarContent>
     </Sidebar>
   )
