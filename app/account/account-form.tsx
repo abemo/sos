@@ -13,28 +13,29 @@ export default function AccountForm({ user }: { user: User | null }) {
   const [loading, setLoading] = useState(true)
   const [fullname, setFullname] = useState('')
   const [username, setUsername] = useState('')
-  const [website, setWebsite] = useState('')
   const [avatar_url, setAvatarUrl] = useState('')
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([])
 
   useEffect(() => {
     if (user) {
       const metadata = user.user_metadata
       setFullname(metadata?.full_name ?? '')
       setUsername(metadata?.username ?? '')
-      setWebsite(metadata?.website ?? '')
       setAvatarUrl(metadata?.avatar_url ?? '')
+      setSelectedCategories(metadata?.selected_categories ?? [])
       setLoading(false)
     }
   }, [user])
 
   async function updateProfile({
     username,
-    website,
+    fullname,
+    selectedCategories,
     avatar_url,
   }: {
     username: string
     fullname: string
-    website: string
+    selectedCategories: string[]
     avatar_url: string
   }) {
     try {
@@ -44,7 +45,7 @@ export default function AccountForm({ user }: { user: User | null }) {
         id: user?.id,
         full_name: fullname,
         username,
-        website,
+        selected_categories: selectedCategories,
         avatar_url,
         updated_at: new Date().toISOString(),
       })
@@ -87,19 +88,30 @@ export default function AccountForm({ user }: { user: User | null }) {
           />
         </div>
         <div>
-          <Label htmlFor="website">Website</Label>
-          <Input
-            id="website"
-            type="url"
-            value={website}
-            onChange={(e) => setWebsite(e.target.value)}
-          />
+          <Label>Select Categories</Label>
+          <div className="space-y-2">
+            {['food', 'housing', 'wellness', 'donate', 'volunteer'].map((category) => (
+              <label key={category} className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  value={category}
+                  checked={selectedCategories.includes(category)}
+                  onChange={(e) => {
+                    setSelectedCategories((prev) =>
+                      e.target.checked
+                        ? [...prev, category] // Add if checked
+                        : prev.filter((c) => c !== category) // Remove if unchecked
+                    );
+                  }}
+                />
+                <span>{category.charAt(0).toUpperCase() + category.slice(1)}</span>
+              </label>
+            ))}
+          </div>
         </div>
         <Button
           className="w-full"
-          onClick={() =>
-            updateProfile({ fullname, username, website, avatar_url })
-          }
+          onClick={() => updateProfile({ fullname, username, selectedCategories, avatar_url })}
           disabled={loading}
         >
           {loading ? 'Loading ...' : 'Update Profile'}

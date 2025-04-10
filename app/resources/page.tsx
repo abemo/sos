@@ -1,6 +1,5 @@
 "use client"
 
-
 import { columns } from "@/components/columns"
 import { DataTable } from "@/components/data-table"
 import { getData } from "@/components/get-data"
@@ -10,7 +9,6 @@ import { useEffect, useState } from "react"
 export default function Page() {
   // make a resource type
   const [resources, setResources] = useState<any[] | null>(null)
-
 
   useEffect(() => {
     console.log('running useEffect')
