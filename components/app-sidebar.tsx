@@ -20,7 +20,7 @@ import {
 
 const allResources = {
   title: "All Resources",
-  url: "/pages/resources",
+  url: "/resources",
   icon: Search,
   filterValue: "",
 }
@@ -36,19 +36,19 @@ const myResources = {
 const aidItems = [
   {
     title: "Housing",
-    url: "/pages/housing",
+    url: "/resources",
     icon: Home,
     filterValue: "Housing",
   },
   {
     title: "Food",
-    url: "/pages/food",
+    url: "/resources",
     icon: Apple,
     filterValue: "Food",
   },
   {
     title: "Wellness",
-    url: "/pages/wellness",
+    url: "/resources",
     icon: Heart,
     filterValue: "Wellness",
   },
@@ -57,13 +57,15 @@ const aidItems = [
 const giveItems = [
   {
     title: "Donate",
-    url: "/pages/donate",
+    url: "/resources",
     icon: HandCoins,
+    filterValue: "Donate",
   },
   {
     title: "Volunteer",
-    url: "/pages/volunteer",
+    url: "/resources",
     icon: Handshake,
+    filterValue: "Volunteer",
   },  
 ]
 
@@ -157,10 +159,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               {giveItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                    <item.icon />
-                    <span>{item.title}</span>
-                    </a>
+                    <Link 
+                      href="/resources" 
+                      onClick={(e) => handleCategoryClick(e, item)}
+                    >
+                      <item.icon />
+                      <span>{item.title}</span>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
