@@ -25,7 +25,7 @@ export default function Page() {
     console.log('getting data')
     void (async () => {
       if (!resources) {
-        const data = await getData({ table: "resources_short" })
+        const data = await getData({ table: "all_resources_short" })
         setResources(data)
       }
     })()
