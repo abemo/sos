@@ -1,6 +1,7 @@
 "use client";
 
 import { updatePassword } from '@/app/reset-confirm/actions';
+import { Link } from 'lucide-react';
 import { useActionState } from 'react';
 
 const Page = () => {
@@ -12,8 +13,8 @@ const Page = () => {
   const { error, success } = state;
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-      <div className="w-full max-w-md bg-white shadow-md rounded-lg p-6">
+    <div className="flex flex-col items-center justify-center min-h-screen">
+      <div className="w-full max-w-md shadow-md rounded-lg p-6">
         <h1 className="text-2xl font-semibold text-center mb-4">Reset Password</h1>
         <form action={formAction} className="space-y-4">
           <label className="form-control w-full">
@@ -23,7 +24,8 @@ const Page = () => {
             <input
               name="password"
               type="password"
-              className="input input-bordered w-full"
+              className="space-y-4 input input-bordered w-full"
+              required
               placeholder="Enter your new password"
             />
           </label>
@@ -45,6 +47,12 @@ const Page = () => {
           {success && (
             <div role="alert" className="alert alert-info mt-2">
               <span>{success}</span>
+              <a
+                href="/protected"
+                className="ml-2 text-blue-600 hover:underline"
+              >
+                Home
+              </a>
             </div>
           )}
         </form>
