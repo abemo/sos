@@ -5,6 +5,7 @@ import { useState } from "react"
 import { cn } from "@/lib/utils"
 import { createClient } from "@/utils/supabase/client"
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
 import {
   Card,
   CardContent,
@@ -14,7 +15,6 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { signInWithGoogle } from "@/app/login/actions"
 
 export function LoginForm({
   className,
@@ -70,12 +70,6 @@ export function LoginForm({
               <div className="grid gap-2">
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
-                  <a
-                    href="#"
-                    className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-                  >
-                    Forgot your password?
-                  </a>
                 </div>
                 <Input
                   id="password"
@@ -95,18 +89,16 @@ export function LoginForm({
             </div>
           </form>
 
-          {/* Google login button using server action */}
-          <form action={signInWithGoogle} className="mt-4">
-            <Button type="submit" variant="outline" className="w-full">
-              Login with Google
-            </Button>
-          </form>
-
           <div className="mt-4 text-center text-sm">
             Don&apos;t have an account?{" "}
             <a href="/login/signup" className="underline underline-offset-4">
               Sign up
             </a>
+          </div>
+          <div className="mt-4 text-center text-sm">
+            <Link href="/reset" className="mt-4 text-center text-sm">
+              Forgot password?
+            </Link>
           </div>
         </CardContent>
       </Card>
