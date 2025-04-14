@@ -6,29 +6,15 @@ import { Button } from "@/components/ui/button"
 import { SidebarIcon } from "lucide-react"
 import { createClient } from "@/utils/supabase/client"
 import Link from "next/link"
-// import { SearchForm } from "@/components/search-form"
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
+import { DynamicBreadcrumb } from "./ui/dynamicbreadcrumb"
 
 export function SiteHeader() {
   const { toggleSidebar } = useSidebar()
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [pathSegments, setPathSegments] = useState<string[]>([])
 
+  // Is this necessary? -Toby
   useEffect(() => {
-    // Client-safe pathname logic
-    const currentPath = window.location.pathname
-      .split("/")
-      .filter(Boolean)
-      .map((part) => part[0].toUpperCase() + part.slice(1))
-    setPathSegments(currentPath)
-
     // Supabase user check
     const checkUser = async () => {
       const supabase = createClient()
@@ -53,21 +39,8 @@ export function SiteHeader() {
           <SidebarIcon />
         </Button>
 
-        <Breadcrumb className="hidden sm:block">
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/">
-                <span className="text-primary">Home</span>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            {!atHome && <BreadcrumbSeparator />}
-            {!atHome && (
-              <BreadcrumbItem>
-                <BreadcrumbPage>{pathSegments.join(" / ")}</BreadcrumbPage>
-              </BreadcrumbItem>
-            )}
-          </BreadcrumbList>
-        </Breadcrumb>
+        <DynamicBreadcrumb/>
+
 
         {/* <SearchForm className="w-full sm:ml-auto sm:w-auto" /> */}
 
