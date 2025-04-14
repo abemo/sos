@@ -1,5 +1,21 @@
 import { createClient } from "@/utils/supabase/client";
 
+export async function getResource(slug: string) {
+  const supabase = createClient();  // Await the client creation
+
+  const { data: resource, error } = await supabase
+    .from ("all_resources_short")
+    .select("*")
+    .eq("slug", slug);
+
+  if (error) {
+    console.error("Error fetching resource:", error);
+    throw new Error("Failed to load resource");
+  }
+
+  return resource; // Return the fetched resource
+}
+
 export async function getData({
   table,
   query = "*",

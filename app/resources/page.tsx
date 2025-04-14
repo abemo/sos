@@ -35,7 +35,7 @@ export default function Page() {
   
   /// need to change styling to work with mobile instead of disappearing
   return (
-    <div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
+    <div className="h-full flex-1 flex-col space-y-8 p-8 md:flex">
       <LocationPopup />
       <DataTable data={resources ?? []} columns={columns} />
     </div>
