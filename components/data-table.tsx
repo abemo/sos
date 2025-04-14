@@ -34,11 +34,6 @@ interface DataTableProps<TData, TValue> {
   data: TData[]
 }
 
-function generateSlug(name: string): string {
-  // Replace spaces with hyphens and convert to lowercase
-  return name.replace(/\s+/g, "-").toLowerCase()
-}
-
 export function DataTable<TData, TValue>({
   columns,
   data,
@@ -82,9 +77,6 @@ export function DataTable<TData, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   })
 
-  // Remove or replace this line with appropriate logic if needed
-  // Example: You can set a filter value using the table's API if required
-
   return (
     <div className="space-y-4">
       <DataTableToolbar table={table} />
@@ -116,15 +108,11 @@ export function DataTable<TData, TValue>({
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
                 className="cursor-pointer hover:bg-slate-100 data-[state=selected]:bg-slate-100"
-                onClick={() => {
-                const slug = generateSlug(row.getValue("name")); // (Slug will be a unique identifier pulled from DB)
-                window.location.href = `/resources/${slug}`;
-                }}
               >
                 {row.getVisibleCells().map((cell) => (
                 <TableCell key={cell.id}>
-                  <Link href={`/resources/${row.getValue("name")}`} key={row.id}>
-
+                  <Link href={`/resources/1`}>
+                  
                     {flexRender(
                     cell.column.columnDef.cell,
                     cell.getContext()
