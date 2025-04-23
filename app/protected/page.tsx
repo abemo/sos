@@ -31,7 +31,9 @@ export default async function ProtectedPage() {
   const savedResources = profile?.saved_resources;
   console.log('savedResources', savedResources)
   // fetch the saved resources from the all_resources table using the allId column from savedResources
-  const allResourceIds = savedResources.map((resource: any) => JSON.parse(resource).allId);
+  let allResourceIds = undefined;
+  if (savedResources) {
+  let allResourceIds = savedResources.map((resource: any) => JSON.parse(resource).allId);
   console.log('allResourceIds', allResourceIds);
   const { data: allResources, error: fetchAllResourcesError } = await supabase
       .from("all_resources")
@@ -41,13 +43,14 @@ export default async function ProtectedPage() {
     console.error("Error fetching all resources:", fetchAllResourcesError.message);
   }
   console.log('allResources', allResources)
-  
+  }
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
       <h1 className="text-3xl font-bold mb-4">Welcome back, {user.user_metadata.full_name}!</h1>
       <p className="text-gray-600 mb-4">Here are your saved resources:</p>
-      <DataTable data={savedResources ?? []} columns={columns}/>
+      {!savedResources && <p className="text-gray-600 mb-4">No saved resources found.</p>}
+      {savedResources && <DataTable data={savedResources ?? []} columns={columns}/>}
       <p className="text-gray-600 mb-4">Here are your recommended resources:</p>
       <ul className="list-disc mb-4">
         <li className="mb-2">Recommended Resource 1</li>
