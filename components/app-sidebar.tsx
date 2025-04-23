@@ -122,10 +122,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </Link>
         </SidebarMenuButton>
         <SidebarMenuButton asChild>
-          <a href={myResources.url}>
+          <Link href={myResources.url}>
             <myResources.icon />
             <span>{myResources.title}</span>
-            </a>
+            </Link>
         </SidebarMenuButton>
       </SidebarHeader>
       <SidebarContent>

@@ -37,6 +37,7 @@ export default function Resource({ slug }: Readonly<{ slug: string }>) {
     return <div>Resource not found</div>
   } 
 
+  console.log("Resource Data:", resourceData)
   const {category, created_at, description, name, _} = resourceData[0]
 
   return (
