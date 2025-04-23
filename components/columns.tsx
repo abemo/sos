@@ -36,6 +36,7 @@ const DistanceCell = ({ row }: { row: any }) => {
   const userCoordinates = useMemo(() => {
     // Try to get coordinates from localStorage or other state management
     // This assumes you're storing the user coordinates somewhere accessible
+    
     try {
       const storedCoords = localStorage.getItem('userCoordinates');
       if (storedCoords) {

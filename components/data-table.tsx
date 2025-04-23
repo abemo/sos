@@ -35,11 +35,11 @@ interface DataTableProps<TData, TValue> {
 }
 
 interface Resource {
+  id: number
   category: "housing" | "food" | "supplies" | "wellness" | "donate" | "volunteer"
   created_at: string
   description: string
   name: string
-  slug: string
 }
 
 export function DataTable<TData extends Resource, TValue>({
@@ -119,7 +119,7 @@ export function DataTable<TData extends Resource, TValue>({
               >
                 {row.getVisibleCells().map((cell) => (
                 <TableCell key={cell.id}>
-                  <Link href={`/resources/${row.original.slug}`} className="flex items-center space-x-2">
+                  <Link href={`/resources/${row.original.id}`} className="flex items-center space-x-2">
                   
                     {flexRender(
                     cell.column.columnDef.cell,

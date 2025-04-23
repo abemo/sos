@@ -8,8 +8,6 @@ import { useEffect, useState } from "react"
 import { useSidebar } from "@/components/ui/sidebar"
 
 
-
-
 export default function Page() {
   const { toggleSidebar, open } = useSidebar()
 
@@ -19,15 +17,14 @@ export default function Page() {
     }
   }, [])
 
-
   // make a resource type
-  const [resources, setResources] = useState<any[] | null>(null)
+  let [resources, setResources] = useState<any[] | null>(null)
 
   useEffect(() => {
     console.log('getting data')
     void (async () => {
       if (!resources) {
-        const data = await getData({ table: "all_resources_short" })
+        const data = await getData({ table: "all_resources" })
         setResources(data)
       }
     })()
