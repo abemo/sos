@@ -104,10 +104,6 @@ export async function getUserFavorites() {
   } 
     const currentUserId = user?.id ?? null
 
-    console.log('currentUserId', currentUserId)
-
-  
-
   // fetch this user's saved resources
   const { data: profile, error: fetchError } = await supabase
       .from("profiles")
@@ -122,4 +118,65 @@ export async function getUserFavorites() {
   console.log('savedResources', savedResources)
 
   return savedResources; // Return the fetched saved resources
+}
+
+// returns true if the resource is a favorite and false if not (after the toggle)
+export async function toggleFavorite(slug: string, isFavorite: boolean) {
+  const supabase = createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    console.log("User not found, redirecting to sign-in page.");
+    //return redirect("/sign-in");
+  } 
+    const currentUserId = user?.id ?? null
+
+  // fetch this user's saved resources
+  const { data: profile, error: fetchError } = await supabase
+      .from("profiles")
+      .select("saved_resources")
+      .eq("id", currentUserId)
+      .single();
+  if (fetchError) {
+    console.error("Error fetching profile:", fetchError.message);
+    return false;
+  }
+  const savedResources = profile?.saved_resources ?? [];
+
+  if (savedResources.includes(slug)) {
+    console.log("Resource already saved, removing from saved resources.");
+    // remove from saved resources
+    const { error: removeError } = await supabase
+      .from("profiles")
+      .update({ saved_resources: savedResources.filter((s: string) => s !== slug) })
+      .eq("id", currentUserId);
+
+    if (!removeError) {
+      console.log("Resource removed from saved resources.");
+      // Set isFavorite to false if the resource was successfully removed
+      isFavorite = false;
+    }
+
+  } else {
+    console.log("Resource not saved, adding to saved resources.");
+    // add to saved resources
+    const { error: addError } = await supabase
+      .from("profiles")
+      .update({ saved_resources: [...savedResources, slug] })
+      .eq("id", currentUserId);
+
+    if (!addError) {
+      console.log("Resource added to saved resources.");
+      // Set isFavorite to true if the resource was successfully added
+      isFavorite = true;
+    }
+  }
+
+  // return 
+
+
+  return isFavorite; // Return the fetched saved resources
 }

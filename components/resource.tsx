@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useSidebar } from "@/components/ui/sidebar"
 import { getResource } from "@/components/get-data"
-import FavoriteResourceButton from "@/components/favorite-resource-button"
+import ToggleFavoriteButton from "@/components/toggle-favorite-button"
 
 export default function Resource({ slug }: Readonly<{ slug: string }>) {
   const [resourceData, setResourceData] = useState<any>(null)
@@ -58,6 +58,7 @@ export default function Resource({ slug }: Readonly<{ slug: string }>) {
           <div className="prose max-w-none">
             <p className="text-gray-700">{description}</p>
           </div>
+          <ToggleFavoriteButton slug={slug}  />
         </div>
         
         {/* Contact sidebar */}
