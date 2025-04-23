@@ -4,9 +4,9 @@ export async function getResource(slug: string) {
   const supabase = createClient();  // Await the client creation
 
   const { data: resource, error } = await supabase
-    .from ("all_resources_short")
+    .from ("all_resources")
     .select("*")
-    .eq("slug", slug);
+    .eq("id", slug);
 
   if (error) {
     console.error("Error fetching resource:", error);
