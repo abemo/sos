@@ -7,25 +7,50 @@ import { columns } from "@/components/columns"
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useSidebar } from "@/components/ui/sidebar";
-import { getData, getFavoriteResources, getUser } from "@/components/get-data";
+import { getData, getFavoriteResources, getUser, getUserFavorites } from "@/components/get-data";
 
 
 export default function ProtectedPage() {
   const [resources, setResources] = useState<any[] | null>(null)
-  const { toggleSidebar, open } = useSidebar()
+  const [userFavorites, setUserFavorites] = useState<any[] | null>(null)
 
-  const tempFavorites = ["food-inn-of-the-7th-ray", "food-tatsu-ramen", "housing-pasadena-civic-auditorium"]  
-
+  
   // make a resource type
+  useEffect(() => {
+    void (async () => {
+      if (!userFavorites) {
+        const favorites = await getUserFavorites()
+        console.log('favorites', favorites)
+        setUserFavorites(favorites)
+      }
+
+    })()
+  } , [])
 
   useEffect(() => {
     void (async () => {
+      if (!userFavorites) {
+        return
+      }
       if (!resources) {
-        const data = await getFavoriteResources(tempFavorites)
+        const data = await getFavoriteResources(userFavorites)
         setResources(data)
       }
     })()
-  } , [])
+  } , [userFavorites])
+
+/* 
+  // fetch the saved resources from the all_resources table using the allId column from savedResources
+  const allResourceIds = savedResources.map((resource: any) => JSON.parse(resource).allId);
+  console.log('allResourceIds', allResourceIds);
+  const { data: allResources, error: fetchAllResourcesError } = await supabase
+      .from("all_resources")
+      .select("*")
+      .in("id", allResourceIds);
+  if (fetchAllResourcesError) {
+    console.error("Error fetching all resources:", fetchAllResourcesError.message);
+  }
+  console.log('allResources', allResources) */
   
 
   return (

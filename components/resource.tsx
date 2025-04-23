@@ -3,10 +3,12 @@
 import { useEffect, useState } from 'react'
 import { useSidebar } from "@/components/ui/sidebar"
 import { getResource } from "@/components/get-data"
+import FavoriteResourceButton from "@/components/favorite-resource-button"
 
 export default function Resource({ slug }: Readonly<{ slug: string }>) {
   const [resourceData, setResourceData] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null)
 
   const { toggleSidebar, open } = useSidebar()
 

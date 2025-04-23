@@ -89,3 +89,37 @@ export async function getUser(favorite_list: string[]) {
   return resources; // Return the fetched favorite resources
   
 }
+
+export async function getUserFavorites() {
+  
+  const supabase = createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    console.log("User not found, redirecting to sign-in page.");
+    //return redirect("/sign-in");
+  } 
+    const currentUserId = user?.id ?? null
+
+    console.log('currentUserId', currentUserId)
+
+  
+
+  // fetch this user's saved resources
+  const { data: profile, error: fetchError } = await supabase
+      .from("profiles")
+      .select("saved_resources")
+      .eq("id", currentUserId)
+      .single();
+  if (fetchError) {
+    console.error("Error fetching profile:", fetchError.message);
+    return <div>Error fetching profile!</div>;
+  }
+  const savedResources = profile?.saved_resources;
+  console.log('savedResources', savedResources)
+
+  return savedResources; // Return the fetched saved resources
+}
