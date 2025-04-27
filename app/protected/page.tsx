@@ -3,7 +3,7 @@ import { createClient } from "@/utils/supabase/server";
 import { InfoIcon } from "lucide-react";
 import { redirect } from "next/navigation";
 import { DataTable } from "@/components/data-table";
-import { columns } from "@/components/columns"
+import { useResourceColumns } from "@/components/columns"
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useSidebar } from "@/components/ui/sidebar";
@@ -54,6 +54,7 @@ export default function ProtectedPage() {
   
   console.log('allResources', allResources) */
   
+  let columns = useResourceColumns()
 
   return (
     <div className="h-full flex-1 flex-col space-y-8 p-8 md:flex">
