@@ -12,5 +12,9 @@ export default async function AccountPage() {
     redirect('/login')
   }
 
-  return <AccountForm user={user} />
+  return (
+    <div className="flex flex-col gap-4">
+      <AccountForm user={user} />
+    </div>
+  )
 }

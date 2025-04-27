@@ -1,6 +1,9 @@
+"use client"
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { AlertCircle, MapPin, RefreshCw } from "lucide-react";
+import { createClient } from '@/utils/supabase/client'
 
 export function LocationPopup() {
   const [userCoordinates, setUserCoordinates] = useState<{ latitude: number; longitude: number } | null>(null);
@@ -13,6 +16,33 @@ export function LocationPopup() {
           'userCoordinates',
           JSON.stringify(userCoordinates)
         );
+
+        // also, if the user is logged in, save to their profile in the database
+        const supabase = createClient();
+        const saveCoordinates = async () => {
+          try {
+            const { data: { session }, error } = await supabase.auth.getSession();
+            if (error) {
+              console.error("Error fetching session:", error);
+              return;
+            }
+            if (session?.user) {
+              const userId = session.user.id;
+              const { error: updateError } = await supabase
+                .from('profiles')
+                .update({ user_latitude: userCoordinates.latitude, user_longitude: userCoordinates.longitude })
+                .eq('id', userId);
+
+              if (updateError) {
+                console.error("Error saving coordinates to database:", updateError);
+              }
+            }
+          } catch (e) {
+            console.error("Error in saveCoordinates:", e);
+          }
+        };
+        saveCoordinates();
+
       } catch (e) {
         console.error('Failed to save coords:', e);
       }

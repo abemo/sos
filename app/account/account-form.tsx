@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { LocationPopup } from '@/components/location-popup'
 
 export default function AccountForm({ user }: { user: User | null }) {
   const supabase = createClient()
@@ -142,6 +143,7 @@ export default function AccountForm({ user }: { user: User | null }) {
               </label>
             ))}
           </div>
+          <LocationPopup />
         </div>
         <Button
           className="w-full"
