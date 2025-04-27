@@ -39,27 +39,16 @@ export default function ProtectedPage() {
       }
     })()
   } , [userFavorites])
-
-/* 
-  // fetch the saved resources from the all_resources table using the allId column from savedResources
-  const allResourceIds = savedResources.map((resource: any) => JSON.parse(resource).allId);
-  console.log('allResourceIds', allResourceIds);
-  const { data: allResources, error: fetchAllResourcesError } = await supabase
-      .from("all_resources")
-      .select("*")
-      .in("id", allResourceIds);
-  if (fetchAllResourcesError) {
-    console.error("Error fetching all resources:", fetchAllResourcesError.message);
-  }
-  
-  console.log('allResources', allResources) */
   
   let columns = useResourceColumns()
 
   return (
+    // My favorite resources
     <div className="h-full flex-1 flex-col space-y-8 p-8 md:flex">
       <DataTable data={resources ?? []} columns={columns} />
 
     </div>
+
+    // Recommended Resources
   );
 }
