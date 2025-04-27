@@ -13,19 +13,49 @@ export default function AccountForm({ user }: { user: User | null }) {
   const [loading, setLoading] = useState(true)
   const [fullname, setFullname] = useState('')
   const [username, setUsername] = useState('')
-  const [avatar_url, setAvatarUrl] = useState('')
+  const [avatarUrl, setAvatarUrl] = useState('')
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
 
   useEffect(() => {
-    if (user) {
-      const metadata = user.user_metadata
-      setFullname(metadata?.full_name ?? '')
-      setUsername(metadata?.username ?? '')
-      setAvatarUrl(metadata?.avatar_url ?? '')
-      setSelectedCategories(metadata?.selected_categories ?? [])
-      setLoading(false)
+    // load from profiles table, fallback to auth metadata if no row
+    async function getProfile() {
+      if (!user) return
+
+      setLoading(true)
+      try {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('full_name, username, avatar_url, selected_categories')
+          .eq('id', user.id)
+          .single()
+
+        if (error && error.code !== 'PGRST116') {
+          throw error
+        }
+
+        if (data) {
+          setFullname(data.full_name ?? '')
+          setUsername(data.username ?? '')
+          setAvatarUrl(data.avatar_url ?? '')
+          setSelectedCategories(data.selected_categories ?? [])
+        } else {
+          // no row yet – use auth metadata as initial fallback
+          const meta = user.user_metadata || {}
+          setFullname(meta.full_name ?? '')
+          setUsername(meta.username ?? '')
+          setAvatarUrl(meta.avatar_url ?? '')
+          setSelectedCategories(meta.selected_categories ?? [])
+        }
+      } catch (err) {
+        console.error('Error loading profile:', err)
+        alert('Could not load profile data.')
+      } finally {
+        setLoading(false)
+      }
     }
-  }, [user])
+
+    getProfile()
+  }, [user, supabase])
 
   async function updateProfile({
     username,
@@ -53,6 +83,7 @@ export default function AccountForm({ user }: { user: User | null }) {
       if (error) throw error
       alert('Profile updated!')
     } catch (error) {
+      console.error('Update error:', error)
       alert('Error updating the data!')
     } finally {
       setLoading(false)
@@ -76,6 +107,7 @@ export default function AccountForm({ user }: { user: User | null }) {
             type="text"
             value={fullname}
             onChange={(e) => setFullname(e.target.value)}
+            disabled={loading}
           />
         </div>
         <div>
@@ -85,6 +117,7 @@ export default function AccountForm({ user }: { user: User | null }) {
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            disabled={loading}
           />
         </div>
         <div>
@@ -96,12 +129,13 @@ export default function AccountForm({ user }: { user: User | null }) {
                   type="checkbox"
                   value={category}
                   checked={selectedCategories.includes(category)}
+                  disabled={loading}
                   onChange={(e) => {
                     setSelectedCategories((prev) =>
                       e.target.checked
-                        ? [...prev, category] // Add if checked
-                        : prev.filter((c) => c !== category) // Remove if unchecked
-                    );
+                        ? [...prev, category]
+                        : prev.filter((c) => c !== category)
+                    )
                   }}
                 />
                 <span>{category.charAt(0).toUpperCase() + category.slice(1)}</span>
@@ -111,10 +145,17 @@ export default function AccountForm({ user }: { user: User | null }) {
         </div>
         <Button
           className="w-full"
-          onClick={() => updateProfile({ fullname, username, selectedCategories, avatar_url })}
+          onClick={() =>
+            updateProfile({
+              fullname,
+              username,
+              selectedCategories,
+              avatar_url: avatarUrl,
+            })
+          }
           disabled={loading}
         >
-          {loading ? 'Loading ...' : 'Update Profile'}
+          {loading ? 'Loading...' : 'Update Profile'}
         </Button>
         <form action="/auth/signout" method="post">
           <Button variant="secondary" className="w-full" type="submit">
