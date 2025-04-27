@@ -180,3 +180,39 @@ export async function toggleFavorite(slug: string, isFavorite: boolean) {
 
   return isFavorite; // Return the fetched saved resources
 }
+
+export async function getUserProfileInfo() {
+  const supabase = createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    console.log("User not found, redirecting to sign-in page.");
+    //return redirect("/sign-in");
+  } 
+  const currentUserId = user?.id ?? null
+  if (!currentUserId) {
+    console.error("User ID not found, redirecting to sign-in page.");
+    return <div>Error: User ID not found!</div>;
+  }
+  // fetch this user's saved resources
+  const { data: profile, error: fetchError } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", currentUserId)
+      .single();
+  if (fetchError) {
+    console.error("Error fetching profile:", fetchError.message);
+    return <div>Error fetching profile!</div>;
+  }
+  const selected_categories = profile?.selected_categories;
+  const user_latitude = profile?.user_latitude;
+  const user_longitude = profile?.user_longitude;
+
+  return {
+    selected_categories,
+    user_latitude,
+    user_longitude,}
+}
