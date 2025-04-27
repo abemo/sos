@@ -51,6 +51,12 @@ const aidItems = [
     icon: Heart,
     filterValue: "Wellness",
   },
+  {
+    title: "Supplies",
+    url: "/resources",
+    icon: Heart,
+    filterValue: "Supplies",
+  }
 ]
 
 const giveItems = [
