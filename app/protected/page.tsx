@@ -39,27 +39,54 @@ export default function ProtectedPage() {
       }
     })()
   } , [userFavorites])
-
-/* 
-  // fetch the saved resources from the all_resources table using the allId column from savedResources
-  const allResourceIds = savedResources.map((resource: any) => JSON.parse(resource).allId);
-  console.log('allResourceIds', allResourceIds);
-  const { data: allResources, error: fetchAllResourcesError } = await supabase
-      .from("all_resources")
-      .select("*")
-      .in("id", allResourceIds);
-  if (fetchAllResourcesError) {
-    console.error("Error fetching all resources:", fetchAllResourcesError.message);
-  }
-  
-  console.log('allResources', allResources) */
   
   let columns = useResourceColumns()
 
   return (
-    <div className="h-full flex-1 flex-col space-y-8 p-8 md:flex">
-      <DataTable data={resources ?? []} columns={columns} />
-
+    <div className="flex flex-col space-y-8 p-6 md:p-8">
+      {/* My Favorite Resources Section */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-3xl font-bold tracking-tight">My Favorite Resources</h2>
+        </div>
+        <div className="rounded-md">
+          {resources?.length ? (<DataTable data={resources ?? []} columns={columns} />
+        
+        ) : (
+        
+          <div className="flex items-center justify-center p-4 text-gray-500">
+            <InfoIcon className="h-5 w-5 mr-2" />
+            No favorite resources yet. View a resource to add it to your favorites.
+          </div>
+        )}
+        </div>
+      </div>
+      {/* Recommended Resources Section 
+          Need to modify resources to be recommended resources in the future
+          Also need to modify the resources?.length condition to whatever we want to use for recs
+      */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-3xl font-bold tracking-tight">Recommended Resources</h2>
+        </div>
+        <div className="rounded-md">
+          {resources?.length ? (<DataTable data={resources ?? []} columns={columns} />
+        
+        ) : (
+          <div className="flex items-center justify-center p-4 text-gray-500 text-sm">
+            <InfoIcon className="h-5 w-5 mr-2" />
+            <span>
+              Not enough info for recommendations. Go to{' '}
+              <Link href="/account" className="text-blue-500 underline hover:text-blue-700">
+                your account
+              </Link>{' '}
+              to get personalized recommendations.
+            </span>
+          </div>
+        )}
+        </div>
+      </div>
     </div>
+
   );
 }

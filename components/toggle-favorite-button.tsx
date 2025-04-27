@@ -11,10 +11,6 @@ export default function ToggleFavoriteButton({ slug }: Readonly<{ slug: string }
   const [userFavorites, setUserFavorites] = useState<any[] | null>(null)
   const [isFavorite, setIsFavorite] = useState(false)
 
-  // check if this resource is a favorite
-
-
-
   // make a resource type
   useEffect(() => {
     void (async () => {
