@@ -1,5 +1,5 @@
 "use client";
-import { createClient } from "@/utils/supabase/server";
+
 import { InfoIcon } from "lucide-react";
 import { redirect } from "next/navigation";
 import { DataTable } from "@/components/data-table";
@@ -7,15 +7,14 @@ import { useResourceColumns } from "@/components/columns"
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useSidebar } from "@/components/ui/sidebar";
-import { getData, getFavoriteResources, getUser, getUserFavorites } from "@/components/get-data";
-
+import { getData, getFavoriteResources, getUser, getUserFavorites, getUserProfileInfo } from "@/components/get-data";
+import { get } from "http";
 
 
 export default function ProtectedPage() {
   const [resources, setResources] = useState<any[] | null>(null)
   const [userFavorites, setUserFavorites] = useState<any[] | null>(null)
 
-  
   // make a resource type
   useEffect(() => {
     void (async () => {
@@ -40,6 +39,20 @@ export default function ProtectedPage() {
     })()
   } , [userFavorites])
   
+  // get the user account information from the profiles table
+  const [profileInfo, setProfileInfo] = useState<any | null>(null);
+  useEffect(() => {
+    void (async () => {
+      if (!profileInfo) {
+        const profile = await getUserProfileInfo()
+        console.log('profile', profile)
+        setProfileInfo(profile)
+      }
+    })()
+  } , [])
+  // console.error('profileInfo', profileInfo.selected_categories, profileInfo.user_latitude, profileInfo.user_longitude)
+  const profileIncomplete = profileInfo?.selected_categories && profileInfo?.user_latitude && profileInfo?.user_longitude
+
   let columns = useResourceColumns()
 
   return (
@@ -51,9 +64,7 @@ export default function ProtectedPage() {
         </div>
         <div className="rounded-md">
           {resources?.length ? (<DataTable data={resources ?? []} columns={columns} />
-        
         ) : (
-        
           <div className="flex items-center justify-center p-4 text-gray-500">
             <InfoIcon className="h-5 w-5 mr-2" />
             No favorite resources yet. View a resource to add it to your favorites.
@@ -70,8 +81,7 @@ export default function ProtectedPage() {
           <h2 className="text-3xl font-bold tracking-tight">Recommended Resources</h2>
         </div>
         <div className="rounded-md">
-          {resources?.length ? (<DataTable data={resources ?? []} columns={columns} />
-        
+          {profileIncomplete ? (<DataTable data={resources ?? []} columns={columns} />
         ) : (
           <div className="flex items-center justify-center p-4 text-gray-500 text-sm">
             <InfoIcon className="h-5 w-5 mr-2" />
