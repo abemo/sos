@@ -3,10 +3,12 @@
 import { useEffect, useState } from 'react'
 import { useSidebar } from "@/components/ui/sidebar"
 import { getResource } from "@/components/get-data"
+import ToggleFavoriteButton from "@/components/toggle-favorite-button"
 
 export default function Resource({ slug }: Readonly<{ slug: any }>) {
   const [resourceData, setResourceData] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null)
 
   const { toggleSidebar, open } = useSidebar()
 
@@ -37,6 +39,7 @@ export default function Resource({ slug }: Readonly<{ slug: any }>) {
     return <div>Resource not found</div>
   } 
 
+  console.log("Resource Data:", resourceData)
   const {category, created_at, description, name, _} = resourceData[0]
 
   return (
@@ -55,6 +58,7 @@ export default function Resource({ slug }: Readonly<{ slug: any }>) {
           <div className="prose max-w-none">
             <p className="text-gray-700">{description}</p>
           </div>
+          <ToggleFavoriteButton slug={slug}  />
         </div>
         
         {/* Contact sidebar */}
