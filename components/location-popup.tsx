@@ -4,6 +4,23 @@ import { AlertCircle, MapPin, RefreshCw } from "lucide-react";
 
 export function LocationPopup() {
   const [userCoordinates, setUserCoordinates] = useState<{ latitude: number; longitude: number } | null>(null);
+
+  useEffect(() => {
+    if (userCoordinates) {
+      try {
+        console.log("saving coords", userCoordinates);
+        localStorage.setItem(
+          'userCoordinates',
+          JSON.stringify(userCoordinates)
+        );
+      } catch (e) {
+        console.error('Failed to save coords:', e);
+      }
+    } else {
+      localStorage.removeItem('userCoordinates');
+    }
+  }, [userCoordinates]);
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
