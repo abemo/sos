@@ -15,19 +15,11 @@ export default function ToggleFavoriteButton({ slug, mode }: Readonly<{ slug: st
   useEffect(() => {
     void (async () => {
       if (!userFavorites) {
-<<<<<<< HEAD
-        const favorites = await getUserFavorites();
-        setUserFavorites(favorites);
-        if (favorites) {
-          const isFav = favorites.includes(slug);
-          setIsFavorite(isFav);
-=======
         const favorites = await getUserFavorites()
         setUserFavorites(favorites)
         if (favorites) {
           const isFav = favorites.includes(slug)
           setIsFavorite(isFav)
->>>>>>> b0b9558 (only show recommended resources if profile (account) complete)
         }
       }
     })();
