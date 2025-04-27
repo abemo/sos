@@ -51,7 +51,7 @@ export function DataTable<TData extends Resource, TValue>({
     React.useState<VisibilityState>({
       name: true,
       description: true,
-      category: false, // default made category hidden
+      category: true, // default made category hidden
       distance: true,
       latitude: false,
       longitude: false,

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useSidebar } from "@/components/ui/sidebar"
 import { getResource } from "@/components/get-data"
 
-export default function Resource({ slug }: Readonly<{ slug: string }>) {
+export default function Resource({ slug }: Readonly<{ slug: any }>) {
   const [resourceData, setResourceData] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(true)
 
