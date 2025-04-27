@@ -20,8 +20,9 @@ export default function ToggleFavoriteButton({ slug }: Readonly<{ slug: string }
     void (async () => {
       if (!userFavorites) {
         const favorites = await getUserFavorites()
-        console.log('favorites', favorites)
         setUserFavorites(favorites)
+        const isFav = favorites.includes(slug)
+        setIsFavorite(isFav)
       }
 
     })()
@@ -32,6 +33,7 @@ export default function ToggleFavoriteButton({ slug }: Readonly<{ slug: string }
       if (!userFavorites) {
         return
       }
+
       if (!resources) {
         const data = await getFavoriteResources(userFavorites)
         setResources(data)
