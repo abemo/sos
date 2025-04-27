@@ -10,6 +10,8 @@ export default function Resource({ slug }: Readonly<{ slug: any }>) {
   const [isLoading, setIsLoading] = useState(true)
   const [currentUserId, setCurrentUserId] = useState<string | null>(null)
 
+  console.log("Resource slug:", slug)
+
   const { toggleSidebar, open } = useSidebar()
 
   useEffect(() => {

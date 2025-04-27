@@ -1,6 +1,6 @@
 import { createClient } from "@/utils/supabase/client";
 
-export async function getResource(id: number) {
+export async function getResource(slug: string) {
   const supabase = createClient();  // Await the client creation
 
   // parse first word from slug
@@ -13,7 +13,7 @@ export async function getResource(id: number) {
   const { data: resource, error } = await supabase
     .from ("all_resources")
     .select("*")
-    .eq("id", id);
+    .eq("slug", slug);
 
   if (error) {
     console.error("Error fetching resource:", error);
