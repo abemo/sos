@@ -15,14 +15,26 @@ export function SiteHeader() {
 
   // Is this necessary? -Toby
   useEffect(() => {
-    // Supabase user check
-    const checkUser = async () => {
-      const supabase = createClient()
-      const { data: { user } } = await supabase.auth.getUser()
-      setIsLoggedIn(!!user)
+    const supabase = createClient()
+  
+    // 1. grab the session right now
+    supabase.auth.getSession()
+      .then(({ data: { session } }) => {
+        setIsLoggedIn(!!session?.user)
+      })
+      .catch(console.error)
+  
+    // 2. subscribe to any future login / logout events
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsLoggedIn(!!session?.user)
+    })
+  
+    // clean up
+    return () => {
+      subscription.unsubscribe()
     }
-
-    checkUser()
   }, [])
 
   const atHome = pathSegments.length === 0

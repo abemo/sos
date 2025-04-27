@@ -2,7 +2,9 @@
 
 import { useRouter, usePathname, useSearchParams } from "next/navigation"
 import { Suspense } from 'react'
-import { Menu, Home, Apple, Settings, Handshake, HandCoins, Heart, Search, BookMarked} from "lucide-react"
+import { useEffect, useState } from "react"
+import { createClient } from "@/utils/supabase/client"
+import { Menu, Home, Apple, Settings, Handshake, HandCoins, Heart, Search, BookMarked, Upload} from "lucide-react"
 import Link from "next/link"
 import {
   Sidebar,
@@ -29,6 +31,12 @@ const myResources = {
   title: "My Resources",
   url: "/protected",
   icon: BookMarked,
+}
+
+const uploadResource = {
+  title: "Upload Resource",
+  url: "/upload",
+  icon: Upload,
 }
 
 // Menu items.
@@ -69,6 +77,32 @@ const giveItems = [
 ]
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {  
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  useEffect(() => {
+    const supabase = createClient()
+  
+    // 1. grab the session right now
+    supabase.auth.getSession()
+      .then(({ data: { session } }) => {
+        setIsLoggedIn(!!session?.user)
+      })
+      .catch(console.error)
+  
+    // 2. subscribe to any future login / logout events
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsLoggedIn(!!session?.user)
+    })
+  
+    // clean up
+    return () => {
+      subscription.unsubscribe()
+    }
+  }, [])
+  console.log("isLoggedIn", isLoggedIn)
+
+
   const router = useRouter();
   const searchParams = useSearchParams();
   
@@ -122,10 +156,22 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </Link>
         </SidebarMenuButton>
         <SidebarMenuButton asChild>
-          <Link href={myResources.url}>
+          <Link 
+            href={myResources.url} 
+            className={!isLoggedIn ? "pointer-events-none text-gray-400" : ""}
+          >
             <myResources.icon />
             <span>{myResources.title}</span>
-            </Link>
+          </Link>
+        </SidebarMenuButton>
+        <SidebarMenuButton asChild>
+          <Link 
+            href={uploadResource.url} 
+            className={!isLoggedIn ? "pointer-events-none text-gray-400" : ""}
+          >
+            <uploadResource.icon />
+            <span>{uploadResource.title}</span>
+          </Link>
         </SidebarMenuButton>
       </SidebarHeader>
       <SidebarContent>
