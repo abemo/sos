@@ -55,10 +55,10 @@ export function useResourceColumns(): ColumnDef<Resource>[] {
       {
         accessorKey: "favorite",
         header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Favorite" />
+          <DataTableColumnHeader column={column} title="" />
         ),
         cell: ({ row }) => (
-          <div className="w-[40px]">{<ToggleFavoriteButton slug={row.original.slug} mode={"icon"}/>}</div>
+          <div className="w-[12px]">{<ToggleFavoriteButton slug={row.original.slug} mode={"icon"}/>}</div>
         ),
         enableSorting: false,
         enableHiding: false,
