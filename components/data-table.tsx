@@ -35,11 +35,11 @@ interface DataTableProps<TData, TValue> {
 }
 
 interface Resource {
-  id: number
   category: "housing" | "food" | "supplies" | "wellness" | "donate" | "volunteer"
   created_at: string
   description: string
   name: string
+  id: string
 }
 
 export function DataTable<TData extends Resource, TValue>({
