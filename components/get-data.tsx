@@ -1,13 +1,32 @@
 import { createClient } from "@/utils/supabase/client";
 
-export async function getResource(slug: string) {
+export async function getResourceDetails(slug: string) {
   const supabase = createClient();  // Await the client creation
 
   // parse first word from slug
   // example slug
   // housing-mariners-village-apartment-homes
+  const category = slug.split("-")[0]; // Get the first word from the slug
+  // validate category\ (todo)
+  const table = category + "_duplicate"
+
+  const { data: resource, error } = await supabase
+    .from(table)
+    .select("*")
+    .eq("slug", slug)
+    .single(); // Use .single() to get a single object instead of an array
+    
+  if (error) {
+    console.error("Error fetching resource details:", error);
+    throw new Error("Failed to load resource details");
+  }
+
+  return resource; // Return the fetched resource details
+}
 
 
+export async function getResource(slug: string) {
+  const supabase = createClient();  // Await the client creation
 
 
   const { data: resource, error } = await supabase
