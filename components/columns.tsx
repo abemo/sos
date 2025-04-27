@@ -7,6 +7,10 @@ import { Badge } from "@/components/ui/badge"
 import { DataTableColumnHeader } from "./data-table-column-header"
 import { categories } from "@/app/data/data"
 import { Resource } from "@/app/data/schema"
+import { Star } from "lucide-react"
+import toggleFavoriteButton from "@/components/toggle-favorite-button"
+import ToggleFavoriteButton from "@/components/toggle-favorite-button"
+import Link from "next/link"
 
 // Haversine formula: distance in miles
 function calculateDistance(
@@ -49,12 +53,25 @@ export function useResourceColumns(): ColumnDef<Resource>[] {
   return useMemo<ColumnDef<Resource>[]>(
     () => [
       {
+        accessorKey: "favorite",
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title="Favorite" />
+        ),
+        cell: ({ row }) => (
+          <div className="w-[40px]">{<ToggleFavoriteButton slug={row.original.slug} mode={"icon"}/>}</div>
+        ),
+        enableSorting: false,
+        enableHiding: false,
+      },
+      {
         accessorKey: "name",
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="Name" />
         ),
         cell: ({ row }) => (
-          <div className="w-[80px]">{row.getValue("name")}</div>
+          <Link href={`/resources/${row.original.slug}`}>
+            <div className="w-[120px]">{row.getValue("name")}</div>
+          </Link>
         ),
         enableSorting: false,
         enableHiding: false,
@@ -69,12 +86,14 @@ export function useResourceColumns(): ColumnDef<Resource>[] {
             (c) => c.value === row.original.category
           )
           return (
-            <div className="flex space-x-2">
-              {cat && <Badge variant="outline">{cat.label}</Badge>}
-              <span className="max-w-[500px] truncate font-medium">
-                {row.getValue("description")}
-              </span>
-            </div>
+            <Link href={`/resources/${row.original.slug}`}>
+              <div className="flex space-x-2">
+                {cat && <Badge variant="outline">{cat.label}</Badge>}
+                <span className="max-w-[500px] truncate font-medium">
+                  {row.getValue("description")}
+                </span>
+              </div>
+            </Link>
           )
         },
       },

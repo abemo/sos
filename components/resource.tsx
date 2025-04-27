@@ -59,7 +59,7 @@ export default function Resource({ slug }: Readonly<{ slug: any }>) {
           <div className="prose max-w-none">
             <p className="text-gray-700">{description}</p>
           </div>
-          <ToggleFavoriteButton slug={slug}  />
+          <ToggleFavoriteButton slug={slug} mode={"text"}  />
         </div>
         
         {/* Contact sidebar */}
