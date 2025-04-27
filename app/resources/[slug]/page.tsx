@@ -17,4 +17,5 @@ export default async function Page({
 
   // pass in id and category for the resource
   return <Resource slug={slug} />
+
 }

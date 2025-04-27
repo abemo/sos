@@ -5,7 +5,7 @@ import { useSidebar } from "@/components/ui/sidebar"
 import { getResource } from "@/components/get-data"
 import ToggleFavoriteButton from "@/components/toggle-favorite-button"
 
-export default function Resource({ slug }: Readonly<{ slug: string }>) {
+export default function Resource({ slug }: Readonly<{ slug: any }>) {
   const [resourceData, setResourceData] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [currentUserId, setCurrentUserId] = useState<string | null>(null)

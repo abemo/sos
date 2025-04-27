@@ -10,6 +10,7 @@ import { useSidebar } from "@/components/ui/sidebar";
 import { getData, getFavoriteResources, getUser, getUserFavorites } from "@/components/get-data";
 
 
+
 export default function ProtectedPage() {
   const [resources, setResources] = useState<any[] | null>(null)
   const [userFavorites, setUserFavorites] = useState<any[] | null>(null)
@@ -50,12 +51,14 @@ export default function ProtectedPage() {
   if (fetchAllResourcesError) {
     console.error("Error fetching all resources:", fetchAllResourcesError.message);
   }
+  
   console.log('allResources', allResources) */
   
 
   return (
     <div className="h-full flex-1 flex-col space-y-8 p-8 md:flex">
       <DataTable data={resources ?? []} columns={columns} />
+
     </div>
   );
 }
