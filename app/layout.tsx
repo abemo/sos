@@ -5,7 +5,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { SiteHeader } from "@/components/site-header";
 import "./globals.css";
 
-import Footer from "@/components/footer";
+import Footer from "@/components/Footer";
 
 const geistSans = Geist({
   display: "swap",
