@@ -7,6 +7,7 @@ import { SidebarIcon } from "lucide-react"
 import { createClient } from "@/utils/supabase/client"
 import Link from "next/link"
 import { DynamicBreadcrumb } from "./ui/dynamicbreadcrumb"
+import Image from "next/image"
 
 export function SiteHeader() {
   const { toggleSidebar } = useSidebar()
@@ -43,26 +44,37 @@ export function SiteHeader() {
     <header className="sticky top-0 z-50 w-full items-center border-b bg-background">
       <div className="flex h-[--header-height] w-full items-center gap-2 px-4">
         <Button
-          className="h-8 w-8"
+          className="h-16 w-16 "
           variant="ghost"
           size="icon"
           onClick={toggleSidebar}
         >
-          <SidebarIcon />
+          <div className="origin-center scale-125">
+            <SidebarIcon className="h-18 w-18" />
+          </div>
         </Button>
+        <a href="/" className="flex items-center">
+          <Image
+            src="/Link_Solo_Logo.png"
+            alt="Website Logo"
+            width={100}
+            height={40}
+            className="hover:opacity-80 transition-opacity"
+            priority={true}
+          />
+        </a>
 
-        <DynamicBreadcrumb/>
-
+        <DynamicBreadcrumb />
 
         {/* <SearchForm className="w-full sm:ml-auto sm:w-auto" /> */}
 
-        <Button asChild className="w-full sm:ml-auto sm:w-auto">
+        <Button asChild className="w-full sm:ml-auto sm:w-auto bg-[#00B1E8]">
           <Link href={isLoggedIn ? "/account" : "/login"}>
             {isLoggedIn ? "Account" : "Log in"}
           </Link>
         </Button>
       </div>
     </header>
-  )
+  );
 }
 
