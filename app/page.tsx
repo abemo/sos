@@ -9,13 +9,9 @@ export default function Home() {
       <section className="text-center max-w-2xl">
         <h1 className="text-3xl font-bold">LINK</h1>
         <h2 className="mt-2 text-xl">Helping Disaster Victims Find Support</h2>
-        <p className="mt-4 text-lg">
-          Access critical resources such as food, shelter, and medical aid. Our platform connects you to real-time 
-          assistance when you need it most.
-        </p>
       </section>
 
-      <div className="w-full max-w-4xl">
+      <div className="w-full max-w-3xl">
         <Carousel />
       </div>
 
