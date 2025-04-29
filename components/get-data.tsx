@@ -1,4 +1,5 @@
 import { createClient } from "@/utils/supabase/client";
+import { parse, v4, validate } from 'uuid';
 
 export async function getResourceDetails(slug: string) {
   const supabase = createClient();  // Await the client creation
@@ -110,7 +111,6 @@ export async function getUser(favorite_list: string[]) {
 }
 
 export async function getUserFavorites() {
-  
   const supabase = createClient();
 
   const {
@@ -137,6 +137,35 @@ export async function getUserFavorites() {
   console.log('savedResources', savedResources)
 
   return savedResources; // Return the fetched saved resources
+}
+
+export async function getRecommended() {
+  const supabase = createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    console.log("User not found, redirecting to sign-in page.");
+    //return redirect("/sign-in");
+  } 
+  const currentUserId = user?.id ?? null
+  if (!currentUserId || !validate(currentUserId)) {
+    console.error("Invalid UUID format for user ID:", currentUserId);
+    return <div>Error: Invalid UUID format!</div>;
+  }
+
+  // fetch this user's saved resources
+  const { data: recommendations, error: fetchError } = await supabase.rpc("resources_recomendation", {
+    profile_id: currentUserId,
+  });
+  if (fetchError) {
+    console.error("Error fetching:", fetchError.message);
+    return <div>Error fetching recommendations!</div>;
+  }
+
+  return recommendations;
 }
 
 // returns true if the resource is a favorite and false if not (after the toggle)

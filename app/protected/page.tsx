@@ -7,7 +7,7 @@ import { useResourceColumns } from "@/components/columns"
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useSidebar } from "@/components/ui/sidebar";
-import { getData, getFavoriteResources, getUser, getUserFavorites, getUserProfileInfo } from "@/components/get-data";
+import { getData, getFavoriteResources, getUser, getUserFavorites, getUserProfileInfo, getRecommended } from "@/components/get-data";
 import { get } from "http";
 
 
@@ -53,6 +53,23 @@ export default function ProtectedPage() {
   // console.error('profileInfo', profileInfo.selected_categories, profileInfo.user_latitude, profileInfo.user_longitude)
   const profileIncomplete = profileInfo?.selected_categories && profileInfo?.user_latitude && profileInfo?.user_longitude
 
+  const [recommendations, setRecommendations] = useState<any[] | null>(null)
+  useEffect(() => {
+    void (async () => {
+      if (!profileInfo) {
+        return
+      }
+      if (!recommendations) {
+        const data = await getRecommended()
+        if (Array.isArray(data)) {
+          setRecommendations(data)
+        } else {
+          console.error("Unexpected data format:", data)
+        }
+      }
+    })()
+  } , [profileInfo])
+  
   let columns = useResourceColumns()
 
   return (
@@ -81,7 +98,7 @@ export default function ProtectedPage() {
           <h2 className="text-3xl font-bold tracking-tight">Recommended Resources</h2>
         </div>
         <div className="rounded-md">
-          {profileIncomplete ? (<DataTable data={resources ?? []} columns={columns} />
+          {profileIncomplete ? (<DataTable data={recommendations ?? []} columns={columns} />
         ) : (
           <div className="flex items-center justify-center p-4 text-gray-500 text-sm">
             <InfoIcon className="h-5 w-5 mr-2" />
