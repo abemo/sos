@@ -9,7 +9,7 @@ export async function getResourceDetails(slug: string) {
   // housing-mariners-village-apartment-homes
   const category = slug.split("-")[0]; // Get the first word from the slug
   // validate category\ (todo)
-  const table = category + "_duplicate"
+  const table = category 
 
   const { data: resource, error } = await supabase
     .from(table)

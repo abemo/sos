@@ -58,7 +58,7 @@ export function useResourceColumns(): ColumnDef<Resource>[] {
           <DataTableColumnHeader column={column} title="" />
         ),
         cell: ({ row }) => (
-          <div className="w-[12px]">{<ToggleFavoriteButton slug={row.original.slug} mode={"icon"}/>}</div>
+          <div className="w-[15px]">{<ToggleFavoriteButton slug={row.original.slug} mode={"icon"}/>}</div>
         ),
         enableSorting: false,
         enableHiding: false,
@@ -70,7 +70,7 @@ export function useResourceColumns(): ColumnDef<Resource>[] {
         ),
         cell: ({ row }) => (
           <Link href={`/resources/${row.original.slug}`}>
-            <div className="w-[120px]">{row.getValue("name")}</div>
+            <div className="w-[130px]">{row.getValue("name")}</div>
           </Link>
         ),
         enableSorting: false,
