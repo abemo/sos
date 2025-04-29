@@ -283,7 +283,7 @@ const HousingResource = ({ resource }: { resource: Resource }) => {
         </div>
       </div>
       
-      <div className="lg:w-1/3">
+      <div className="lg:w-2/3">
         <div className="bg-gray-50 p-6 rounded-lg shadow">
           <h2 className="text-xl font-semibold mb-4">Contact Information</h2>
           
@@ -469,7 +469,7 @@ const WellnessResource = ({ resource }: { resource: Resource }) => {
   
   return (
     <>
-      <div className="lg:w-2/3">
+      <div className="lg:w-1/2">
         <div className="bg-white rounded-lg shadow p-6">
           <h2 className="text-xl font-semibold mb-4">Details</h2>
           
@@ -503,7 +503,7 @@ const WellnessResource = ({ resource }: { resource: Resource }) => {
         </div>
       </div>
       
-      <div className="lg:w-1/3">
+      <div className="lg:w-1/2">
         <div className="bg-gray-50 p-6 rounded-lg shadow">
           <h2 className="text-xl font-semibold mb-4">Contact Information</h2>
           
