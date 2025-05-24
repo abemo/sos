@@ -26,7 +26,7 @@ export function DynamicBreadcrumb() {
       <BreadcrumbList>
         <BreadcrumbItem>
           <Link href="/">
-            <span className="text-primary">Home</span>
+            {/* <span className="text-primary">Home</span> */}
           </Link>
         </BreadcrumbItem>
         
