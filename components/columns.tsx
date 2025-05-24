@@ -70,7 +70,7 @@ export function useResourceColumns(): ColumnDef<Resource>[] {
         ),
         cell: ({ row }) => (
           <Link href={`/resources/${row.original.slug}`}>
-            <div className="w-[120px]">{row.getValue("name")}</div>
+            <div className="w-[120px] text-lg">{row.getValue("name")}</div>
           </Link>
         ),
         enableSorting: false,
@@ -89,7 +89,7 @@ export function useResourceColumns(): ColumnDef<Resource>[] {
             <Link href={`/resources/${row.original.slug}`}>
               <div className="flex space-x-2">
                 {cat && <Badge variant="outline">{cat.label}</Badge>}
-                <span className="max-w-[500px] truncate font-medium">
+                <span className="max-w-[500px] truncate font-medium text-lg">
                   {row.getValue("description")}
                 </span>
               </div>
@@ -100,7 +100,7 @@ export function useResourceColumns(): ColumnDef<Resource>[] {
       {
         accessorKey: "category",
         header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Category" />
+          <DataTableColumnHeader column={column} title="Category" className="text-lg" />
         ),
         cell: ({ row }) => {
           const cat = categories.find(
@@ -136,7 +136,7 @@ export function useResourceColumns(): ColumnDef<Resource>[] {
         ),
         cell: ({ getValue }) => {
           const d = getValue() as number | undefined
-          return <div className="w-[80px]">{d != null ? `${d} mi` : "--"}</div>
+          return <div className="w-[80px] text-lg">{d != null ? `${d} mi` : "--"}</div>
         },
         enableSorting: true,
         sortingFn: "basic",
